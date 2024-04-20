@@ -1,7 +1,7 @@
 meta {
-  name: Update a class successfully
+  name: Update a offline class with no address provided
   type: http
-  seq: 9
+  seq: 10
 }
 
 patch {
@@ -15,7 +15,7 @@ body:json {
       "classCategoryIds": [
           "97b71320-9910-49ad-b2c9-a57fcfeb74fc"
       ],
-      "isOnline": true,
+      "isOnline": false,
       "studentQty": 1,
       "timeSlots": [
           {
@@ -28,6 +28,8 @@ body:json {
 }
 
 assert {
-  res.status: eq 200
-  res.responseTime: lte {{high_response_time}}
+  res.status: eq 400
+  res.responseTime: lte {{medium_response_time}}
+  res.body: contains Address and wardId are required for offline classes.
+  res.body: length 1
 }

@@ -1,11 +1,11 @@
 meta {
-  name: Update a non-existing class
+  name: Create a offline class with no address provided
   type: http
-  seq: 6
+  seq: 5
 }
 
-patch {
-  url: {{base_url}}/classes/44099335-7fe0-41de-a364-713c535654ba
+post {
+  url: {{base_url}}/classes
   body: json
   auth: inherit
 }
@@ -13,9 +13,9 @@ patch {
 body:json {
   {
       "classCategoryIds": [
-          "f9463484-99c5-427d-8112-c09b5ba659cd"
+          "97b71320-9910-49ad-b2c9-a57fcfeb74fc"
       ],
-      "isOnline": true,
+      "isOnline": false,
       "studentQty": 1,
       "timeSlots": [
           {
@@ -29,7 +29,11 @@ body:json {
 
 assert {
   res.status: eq 400
-  res.body: length 1
-  res.body: contains Class not found.
   res.responseTime: lte {{medium_response_time}}
+  res.body: contains Address and wardId are required for offline classes.
+  res.body: length 1
+}
+
+script:post-response {
+  bru.setVar('created_class_id', res.body.id);
 }
