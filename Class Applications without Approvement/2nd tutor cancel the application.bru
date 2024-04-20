@@ -14,26 +14,6 @@ auth:bearer {
   token: {{2nd_tutor_access_token}}
 }
 
-body:json {
-  {
-      "classCategoryIds": [
-          "97b71320-9910-49ad-b2c9-a57fcfeb74fc"
-      ],
-      "isOnline": true,
-      "studentQty": 1,
-      "timeSlots": [
-          {
-              "startTime": "19:00",
-              "endTime": "21:00",
-              "weekday": "MONDAY"
-          }
-      ],
-      "desiredTutorIds": [
-        {{sample_tutor_id}}
-      ]
-  }
-}
-
 assert {
   res.status: eq 200
   res.responseTime: lte {{medium_response_time}}
