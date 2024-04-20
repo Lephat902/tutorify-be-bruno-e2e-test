@@ -1,0 +1,27 @@
+meta {
+  name: Login by username successfully1
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "username": "{{sample_student_username}}",
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body: isJson
+  res.body.user: isJson
+  res.body.user.username: eq {{sample_student_username}}
+  res.body.token: isDefined
+  res.body.token: isString
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Update a non-existing class
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{base_url}}/classes/44099335-7fe0-41de-a364-713c535654ba
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "classCategoryIds": [
+          "f9463484-99c5-427d-8112-c09b5ba659cd"
+      ],
+      "isOnline": true,
+      "studentQty": 1,
+      "timeSlots": [
+          {
+              "startTime": "19:00",
+              "endTime": "21:00",
+              "weekday": "MONDAY"
+          }
+      ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains Class not found.
+  res.responseTime: lte {{medium_response_time}}
+}

@@ -1,0 +1,36 @@
+meta {
+  name: Create a class with invalid timeslots
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/classes
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "classCategoryIds": [
+          "97b71320-9910-49ad-b2c9-a57fcfeb74fc"
+      ],
+      "isOnline": true,
+      "studentQty": 1,
+      "timeSlots": [
+          {
+              "startTime": "39:00",
+              "endTime": "21:00",
+              "weekday": "MOONDAY"
+          }
+      ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 2
+  res.body: contains timeSlots.0.Invalid time format. Time should be in HH:mm format.
+  res.body: contains timeSlots.0.weekday must be one of the following values: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+  res.responseTime: lte {{low_response_time}}
+}

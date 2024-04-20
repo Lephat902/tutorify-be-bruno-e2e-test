@@ -1,0 +1,32 @@
+meta {
+  name: Verify user is blocked
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($userId: String!) {
+    user(id: $userId) {
+      id
+      isBlocked
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "userId": "{{user_id_to_block}}"
+  }
+}
+
+assert {
+  res.body.data.user.id: eq {{user_id_to_block}}
+  res.body.data.user.isBlocked: isTruthy abc
+}

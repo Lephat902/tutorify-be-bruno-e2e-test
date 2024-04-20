@@ -1,0 +1,25 @@
+meta {
+  name: Login with wrong email
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "shsit",
+      "password": "arbitrary text"
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.body: length 1
+  res.body: contains User not found
+  res.responseTime: lte {{medium_response_time}}
+}

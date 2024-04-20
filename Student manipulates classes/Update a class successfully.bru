@@ -1,0 +1,33 @@
+meta {
+  name: Update a class successfully
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{base_url}}/classes/{{created_class_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "classCategoryIds": [
+          "97b71320-9910-49ad-b2c9-a57fcfeb74fc"
+      ],
+      "isOnline": true,
+      "studentQty": 1,
+      "timeSlots": [
+          {
+              "startTime": "19:00",
+              "endTime": "21:00",
+              "weekday": "MONDAY"
+          }
+      ]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{high_response_time}}
+}

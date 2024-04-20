@@ -1,0 +1,35 @@
+meta {
+  name: Update a class with non-existing class category
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url}}/classes/{{created_class_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "classCategoryIds": [
+          "f9463484-99c5-427d-8112-c09b5ba659cd"
+      ],
+      "isOnline": true,
+      "studentQty": 1,
+      "timeSlots": [
+          {
+              "startTime": "19:00",
+              "endTime": "21:00",
+              "weekday": "MONDAY"
+          }
+      ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains One or more provided classCategoryIds are invalid.
+  res.responseTime: lte {{medium_response_time}}
+}

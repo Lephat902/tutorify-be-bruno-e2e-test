@@ -1,0 +1,16 @@
+meta {
+  name: Unblock an account
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{base_url}}/users/{{user_id_to_block}}/unblock
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}

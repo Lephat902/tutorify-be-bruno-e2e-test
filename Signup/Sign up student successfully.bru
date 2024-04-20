@@ -1,0 +1,42 @@
+meta {
+  name: Sign up student successfully
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/students/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{random_student_email}}",
+      "username": "{{random_student_username}}",
+      "password": "{{random_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body: isJson
+  res.body.id: isString
+  res.body.email: eq {{random_student_email}}
+  res.body.username: eq {{random_student_username}}
+  res.body.role: eq STUDENT
+  res.responseTime: lte {{high_response_time}}
+}
+
+script:pre-request {
+  const shortLen = 7;
+  const randomStr = utils.generateRandomString(shortLen);
+  const randomEmail = `test${randomStr}@test.com`;
+  bru.setVar('random_student_email', randomEmail);
+  bru.setVar('random_student_username', randomStr);
+  bru.setVar('random_student_password', randomStr);
+}
+
+script:post-response {
+  bru.setVar('created_user_id', res.body.id);
+}

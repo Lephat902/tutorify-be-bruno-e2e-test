@@ -1,0 +1,25 @@
+meta {
+  name: Login with unverified email
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{unverified_email}}",
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.body: length 1
+  res.body: contains Email not verified
+  res.responseTime: lte {{medium_response_time}}
+}

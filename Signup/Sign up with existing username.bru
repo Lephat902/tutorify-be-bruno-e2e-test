@@ -1,0 +1,33 @@
+meta {
+  name: Sign up with existing username
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/students/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{random_student_email}}",
+      "username": "{{sample_student_username}}",
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains Username already exists
+  res.responseTime: lte {{medium_response_time}}
+}
+
+script:pre-request {
+  const shortLen = 7;
+  const randomStr = utils.generateRandomString(shortLen);
+  const randomEmail = `test${randomStr}@test.com`;
+  bru.setVar('random_student_email', randomEmail);
+}

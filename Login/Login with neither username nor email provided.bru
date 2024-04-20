@@ -1,0 +1,24 @@
+meta {
+  name: Login with neither username nor email provided
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains Provide either email or username to log in
+  res.responseTime: lte {{medium_response_time}}
+}

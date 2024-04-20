@@ -1,0 +1,34 @@
+meta {
+  name: Sign up with malformed email
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/students/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "abcdef",
+      "username": "{{random_student_username}}",
+      "password": "{{random_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains email must be an email
+  res.responseTime: lte {{low_response_time}}
+}
+
+script:pre-request {
+  const shortLen = 7;
+  const randomStr = utils.generateRandomString(shortLen);
+  
+  bru.setVar('random_student_username', randomStr);
+  bru.setVar('random_student_password', randomStr);
+}

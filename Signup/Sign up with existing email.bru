@@ -1,0 +1,26 @@
+meta {
+  name: Sign up with existing email
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/students/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{sample_student_email}}",
+      "username": "{{sample_student_username}}",
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains Email already exists
+  res.responseTime: lte {{medium_response_time}}
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Login by email successfully
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{sample_student_email}}",
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body: isJson 
+  res.body.user: isJson 
+  res.body.user.email: eq {{sample_student_email}}
+  res.body.token: isDefined 
+  res.body.token: isString 
+}

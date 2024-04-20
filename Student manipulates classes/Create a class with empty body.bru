@@ -1,0 +1,21 @@
+meta {
+  name: Create a class with empty body
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/classes
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 10
+  res.body: contains classCategoryIds should not be empty
+  res.body: contains isOnline should not be empty
+  res.body: contains studentQty should not be empty
+  res.body: contains timeSlots should not be empty
+  res.responseTime: lte {{low_response_time}}
+}

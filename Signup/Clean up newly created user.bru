@@ -1,0 +1,20 @@
+meta {
+  name: Clean up newly created user
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{base_url}}/users/{{created_user_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isTruthy
+}

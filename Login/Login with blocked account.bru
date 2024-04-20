@@ -1,0 +1,25 @@
+meta {
+  name: Login with blocked account
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{blocked_account_email}}",
+      "password": "{{sample_student_password}}"
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.body: length 1
+  res.body: contains User is blocked
+  res.responseTime: lte {{medium_response_time}}
+}
