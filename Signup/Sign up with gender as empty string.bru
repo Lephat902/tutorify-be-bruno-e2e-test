@@ -1,7 +1,7 @@
 meta {
-  name: Sign up student successfully
+  name: Sign up with gender as empty string
   type: http
-  seq: 7
+  seq: 6
 }
 
 post {
@@ -14,18 +14,16 @@ body:json {
   {
       "email": "{{random_student_email}}",
       "username": "{{random_student_username}}",
-      "password": "{{random_student_password}}"
+      "password": "{{random_student_password}}",
+      "gender": ""
   }
 }
 
 assert {
-  res.status: eq 201
-  res.body: isJson
-  res.body.id: isString
-  res.body.email: eq {{random_student_email}}
-  res.body.username: eq {{random_student_username}}
-  res.body.role: eq STUDENT
-  res.responseTime: lte {{high_response_time}}
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains gender must be one of the following values: MALE, FEMALE, OTHER
+  res.responseTime: lte {{low_response_time}}
 }
 
 script:pre-request {
