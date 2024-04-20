@@ -1,0 +1,26 @@
+meta {
+  name: Login by 1st tutor
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{sample_tutor_email}}",
+      "password": "{{sample_tutor_password}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("1st_tutor_access_token", res.body.token);
+}

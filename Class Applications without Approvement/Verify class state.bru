@@ -1,0 +1,32 @@
+meta {
+  name: Verify class state
+  type: graphql
+  seq: 17
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($classId: String!) {
+    class(id: $classId) {
+      id
+      status
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{created_class_id}}"
+  }
+}
+
+assert {
+  res.body.data.class.id: eq {{created_class_id}}
+  res.body.data.class.status: eq UNASSIGNED
+}

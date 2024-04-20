@@ -1,0 +1,42 @@
+meta {
+  name: 1st tutor cancel tutoring request
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{base_url}}/classes/applications/{{1st_tutor_application_id}}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{1st_tutor_access_token}}
+}
+
+body:json {
+  {
+      "classCategoryIds": [
+          "97b71320-9910-49ad-b2c9-a57fcfeb74fc"
+      ],
+      "isOnline": true,
+      "studentQty": 1,
+      "timeSlots": [
+          {
+              "startTime": "19:00",
+              "endTime": "21:00",
+              "weekday": "MONDAY"
+          }
+      ],
+      "desiredTutorIds": [
+        {{sample_tutor_id}}
+      ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{medium_response_time}}
+  res.body: length 1
+  res.body: contains There is something wrong with your request
+}

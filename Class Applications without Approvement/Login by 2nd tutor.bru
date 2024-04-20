@@ -1,0 +1,26 @@
+meta {
+  name: Login by 2nd tutor
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "{{sample_tutor_email_1}}",
+      "password": "{{sample_tutor_password}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("2nd_tutor_access_token", res.body.token);
+}

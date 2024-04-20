@@ -1,0 +1,48 @@
+meta {
+  name: Verify all application's status is CLASS_DELETED
+  type: graphql
+  seq: 20
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:graphql {
+  query ExampleQuery($includeDeletedClass: Boolean, $classId: String) {
+    classApplications(includeDeletedClass: $includeDeletedClass, classId: $classId) {
+      id
+      status
+      isDesignated
+      tutorId
+      classId
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{created_class_id}}",
+    "includeDeletedClass": true
+  }
+}
+
+assert {
+  res.body.data.classApplications: length 3
+}
+
+tests {
+  test("Results should be correct", () => {
+    for (const application of res.body.data.classApplications) {
+      expect(application.classId).to.equal(bru.getVar('created_class_id'));
+      expect(application.status).to.equal('CLASS_DELETED');
+    }
+  });
+}

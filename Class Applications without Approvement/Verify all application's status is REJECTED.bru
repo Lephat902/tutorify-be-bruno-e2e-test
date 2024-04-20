@@ -1,0 +1,43 @@
+meta {
+  name: Verify all application's status is REJECTED
+  type: graphql
+  seq: 16
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($classId: String) {
+    classApplications(classId: $classId) {
+      id
+      status
+      isDesignated
+      tutorId
+      classId
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{created_class_id}}"
+  }
+}
+
+assert {
+  res.body.data.classApplications: length 3
+}
+
+tests {
+  test("Results should be correct", () => {
+    for (const application of res.body.data.classApplications) {
+      expect(application.classId).to.equal(bru.getVar('created_class_id'));
+      expect(['REJECTED', 'CANCELLED']).to.include(application.status);
+    }
+  });
+}
