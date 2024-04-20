@@ -1,5 +1,5 @@
 meta {
-  name: Verify all application's status is CLASS_DELETED
+  name: 1st tutor verify status is CLASS_DELETED
   type: graphql
   seq: 20
 }
@@ -11,16 +11,13 @@ post {
 }
 
 auth:bearer {
-  token: {{admin_access_token}}
+  token: {{1st_tutor_access_token}}
 }
 
 body:graphql {
   query ExampleQuery($includeDeletedClass: Boolean, $classId: String) {
     classApplications(includeDeletedClass: $includeDeletedClass, classId: $classId) {
-      id
       status
-      isDesignated
-      tutorId
       classId
     }
   }
@@ -35,7 +32,7 @@ body:graphql:vars {
 }
 
 assert {
-  res.body.data.classApplications: length 3
+  res.body.data.classApplications: length 1
 }
 
 tests {

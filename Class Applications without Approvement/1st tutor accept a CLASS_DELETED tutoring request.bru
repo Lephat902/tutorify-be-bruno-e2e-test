@@ -1,11 +1,11 @@
 meta {
   name: 1st tutor accept a CLASS_DELETED tutoring request
   type: http
-  seq: 21
+  seq: 22
 }
 
 patch {
-  url: {{base_url}}/classes/applications/{{1st_tutor_application_id}}/accept
+  url: {{base_url}}/classes/applications/{{1st_tutor_application_id}}/approve
   body: none
   auth: bearer
 }
@@ -18,5 +18,5 @@ assert {
   res.status: eq 400
   res.responseTime: lte {{medium_response_time}}
   res.body: length 1
-  res.body: contains Cannot rejected application with status other than PENDING
+  res.body: contains Cannot approved application with status other than PENDING
 }
