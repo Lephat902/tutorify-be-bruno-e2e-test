@@ -1,0 +1,104 @@
+{
+  "data": {
+    "wards": [
+      {
+        "id": "00001",
+        "name": "Phúc Xá",
+        "nameEn": "Phuc Xa",
+        "fullName": "Phường Phúc Xá",
+        "fullNameEn": "Phuc Xa Ward"
+      },
+      {
+        "id": "00004",
+        "name": "Trúc Bạch",
+        "nameEn": "Truc Bach",
+        "fullName": "Phường Trúc Bạch",
+        "fullNameEn": "Truc Bach Ward"
+      },
+      {
+        "id": "00006",
+        "name": "Vĩnh Phúc",
+        "nameEn": "Vinh Phuc",
+        "fullName": "Phường Vĩnh Phúc",
+        "fullNameEn": "Vinh Phuc Ward"
+      },
+      {
+        "id": "00007",
+        "name": "Cống Vị",
+        "nameEn": "Cong Vi",
+        "fullName": "Phường Cống Vị",
+        "fullNameEn": "Cong Vi Ward"
+      },
+      {
+        "id": "00008",
+        "name": "Liễu Giai",
+        "nameEn": "Lieu Giai",
+        "fullName": "Phường Liễu Giai",
+        "fullNameEn": "Lieu Giai Ward"
+      },
+      {
+        "id": "00010",
+        "name": "Nguyễn Trung Trực",
+        "nameEn": "Nguyen Trung Truc",
+        "fullName": "Phường Nguyễn Trung Trực",
+        "fullNameEn": "Nguyen Trung Truc Ward"
+      },
+      {
+        "id": "00013",
+        "name": "Quán Thánh",
+        "nameEn": "Quan Thanh",
+        "fullName": "Phường Quán Thánh",
+        "fullNameEn": "Quan Thanh Ward"
+      },
+      {
+        "id": "00016",
+        "name": "Ngọc Hà",
+        "nameEn": "Ngoc Ha",
+        "fullName": "Phường Ngọc Hà",
+        "fullNameEn": "Ngoc Ha Ward"
+      },
+      {
+        "id": "00019",
+        "name": "Điện Biên",
+        "nameEn": "Dien Bien",
+        "fullName": "Phường Điện Biên",
+        "fullNameEn": "Dien Bien Ward"
+      },
+      {
+        "id": "00022",
+        "name": "Đội Cấn",
+        "nameEn": "Doi Can",
+        "fullName": "Phường Đội Cấn",
+        "fullNameEn": "Doi Can Ward"
+      },
+      {
+        "id": "00025",
+        "name": "Ngọc Khánh",
+        "nameEn": "Ngoc Khanh",
+        "fullName": "Phường Ngọc Khánh",
+        "fullNameEn": "Ngoc Khanh Ward"
+      },
+      {
+        "id": "00028",
+        "name": "Kim Mã",
+        "nameEn": "Kim Ma",
+        "fullName": "Phường Kim Mã",
+        "fullNameEn": "Kim Ma Ward"
+      },
+      {
+        "id": "00031",
+        "name": "Giảng Võ",
+        "nameEn": "Giang Vo",
+        "fullName": "Phường Giảng Võ",
+        "fullNameEn": "Giang Vo Ward"
+      },
+      {
+        "id": "00034",
+        "name": "Thành Công",
+        "nameEn": "Thanh Cong",
+        "fullName": "Phường Thành Công",
+        "fullNameEn": "Thanh Cong Ward"
+      }
+    ]
+  }
+}
