@@ -1,0 +1,41 @@
+meta {
+  name: Get full districts
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query Query {
+    districts(districtCode: "01") {
+      id
+      name
+      nameEn
+      fullName
+      fullNameEn
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  const fs = require('node:fs');
+  const path = require("path");
+  const cwd = bru.cwd();
+  
+  test("should get full districts of a province", function (){
+    const outputData = res.getBody();
+  const expectedData = JSON.parse(fs.readFileSync(path.join(cwd, "test-data/districts.json"),{ encoding: 'utf8', flag: 'r' }));
+  
+   expect(outputData).to.deep.equal(expectedData);
+     
+  });
+}
