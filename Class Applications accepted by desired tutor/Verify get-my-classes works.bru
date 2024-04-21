@@ -1,0 +1,41 @@
+meta {
+  name: Verify get-my-classes works
+  type: graphql
+  seq: 11
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($me: Boolean, $order: ClassOrderBy, $page: Int, $limit: Int, $dir: String) {
+    classes(me: $me, order: $order, page: $page, limit: $limit, dir: $dir) {
+      results {
+        id
+        status
+        tutorId
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "me": true,
+    "order": "CREATE_DAY",
+    "page": 1,
+    "limit": 1,
+    "dir": "DESC"
+  }
+}
+
+assert {
+  res.body.data.classes.results[0].id: eq {{created_class_id}}
+  res.body.data.classes.results[0].status: eq ASSIGNED
+  res.body.data.classes.results[0].tutorId: eq {{sample_tutor_id}}
+  res.body.data.classes.results: length 1
+}
