@@ -1,7 +1,7 @@
 meta {
-  name: Get full provinces
+  name: Get full districts
   type: graphql
-  seq: 1
+  seq: 2
 }
 
 post {
@@ -12,7 +12,7 @@ post {
 
 body:graphql {
   query Query {
-    provinces {
+    districts(districtCode: "01") {
       id
       name
       nameEn
@@ -31,9 +31,9 @@ tests {
   const path = require("path");
   const cwd = bru.cwd();
   
-  test("should get full provinces", function (){
+  test("should get full districts of a province", function (){
     const outputData = res.getBody();
-  const expectedData = JSON.parse(fs.readFileSync(path.join(cwd, "test-data/provinces.json"),{ encoding: 'utf8', flag: 'r' }));
+  const expectedData = JSON.parse(fs.readFileSync(path.join(cwd, "test-data/districts.json"),{ encoding: 'utf8', flag: 'r' }));
   
    expect(outputData).to.deep.equal(expectedData);
      

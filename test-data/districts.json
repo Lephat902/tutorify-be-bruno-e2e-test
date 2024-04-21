@@ -1,0 +1,216 @@
+{
+  "data": {
+    "districts": [
+      {
+        "id": "001",
+        "name": "Ba Đình",
+        "nameEn": "Ba Dinh",
+        "fullName": "Quận Ba Đình",
+        "fullNameEn": "Ba Dinh District"
+      },
+      {
+        "id": "002",
+        "name": "Hoàn Kiếm",
+        "nameEn": "Hoan Kiem",
+        "fullName": "Quận Hoàn Kiếm",
+        "fullNameEn": "Hoan Kiem District"
+      },
+      {
+        "id": "003",
+        "name": "Tây Hồ",
+        "nameEn": "Tay Ho",
+        "fullName": "Quận Tây Hồ",
+        "fullNameEn": "Tay Ho District"
+      },
+      {
+        "id": "004",
+        "name": "Long Biên",
+        "nameEn": "Long Bien",
+        "fullName": "Quận Long Biên",
+        "fullNameEn": "Long Bien District"
+      },
+      {
+        "id": "005",
+        "name": "Cầu Giấy",
+        "nameEn": "Cau Giay",
+        "fullName": "Quận Cầu Giấy",
+        "fullNameEn": "Cau Giay District"
+      },
+      {
+        "id": "006",
+        "name": "Đống Đa",
+        "nameEn": "Dong Da",
+        "fullName": "Quận Đống Đa",
+        "fullNameEn": "Dong Da District"
+      },
+      {
+        "id": "007",
+        "name": "Hai Bà Trưng",
+        "nameEn": "Hai Ba Trung",
+        "fullName": "Quận Hai Bà Trưng",
+        "fullNameEn": "Hai Ba Trung District"
+      },
+      {
+        "id": "008",
+        "name": "Hoàng Mai",
+        "nameEn": "Hoang Mai",
+        "fullName": "Quận Hoàng Mai",
+        "fullNameEn": "Hoang Mai District"
+      },
+      {
+        "id": "009",
+        "name": "Thanh Xuân",
+        "nameEn": "Thanh Xuan",
+        "fullName": "Quận Thanh Xuân",
+        "fullNameEn": "Thanh Xuan District"
+      },
+      {
+        "id": "016",
+        "name": "Sóc Sơn",
+        "nameEn": "Soc Son",
+        "fullName": "Huyện Sóc Sơn",
+        "fullNameEn": "Soc Son District"
+      },
+      {
+        "id": "017",
+        "name": "Đông Anh",
+        "nameEn": "Dong Anh",
+        "fullName": "Huyện Đông Anh",
+        "fullNameEn": "Dong Anh District"
+      },
+      {
+        "id": "018",
+        "name": "Gia Lâm",
+        "nameEn": "Gia Lam",
+        "fullName": "Huyện Gia Lâm",
+        "fullNameEn": "Gia Lam District"
+      },
+      {
+        "id": "019",
+        "name": "Nam Từ Liêm",
+        "nameEn": "Nam Tu Liem",
+        "fullName": "Quận Nam Từ Liêm",
+        "fullNameEn": "Nam Tu Liem District"
+      },
+      {
+        "id": "020",
+        "name": "Thanh Trì",
+        "nameEn": "Thanh Tri",
+        "fullName": "Huyện Thanh Trì",
+        "fullNameEn": "Thanh Tri District"
+      },
+      {
+        "id": "021",
+        "name": "Bắc Từ Liêm",
+        "nameEn": "Bac Tu Liem",
+        "fullName": "Quận Bắc Từ Liêm",
+        "fullNameEn": "Bac Tu Liem District"
+      },
+      {
+        "id": "250",
+        "name": "Mê Linh",
+        "nameEn": "Me Linh",
+        "fullName": "Huyện Mê Linh",
+        "fullNameEn": "Me Linh District"
+      },
+      {
+        "id": "268",
+        "name": "Hà Đông",
+        "nameEn": "Ha Dong",
+        "fullName": "Quận Hà Đông",
+        "fullNameEn": "Ha Dong District"
+      },
+      {
+        "id": "269",
+        "name": "Sơn Tây",
+        "nameEn": "Son Tay",
+        "fullName": "Thị xã Sơn Tây",
+        "fullNameEn": "Son Tay Town"
+      },
+      {
+        "id": "271",
+        "name": "Ba Vì",
+        "nameEn": "Ba Vi",
+        "fullName": "Huyện Ba Vì",
+        "fullNameEn": "Ba Vi District"
+      },
+      {
+        "id": "272",
+        "name": "Phúc Thọ",
+        "nameEn": "Phuc Tho",
+        "fullName": "Huyện Phúc Thọ",
+        "fullNameEn": "Phuc Tho District"
+      },
+      {
+        "id": "273",
+        "name": "Đan Phượng",
+        "nameEn": "Dan Phuong",
+        "fullName": "Huyện Đan Phượng",
+        "fullNameEn": "Dan Phuong District"
+      },
+      {
+        "id": "274",
+        "name": "Hoài Đức",
+        "nameEn": "Hoai Duc",
+        "fullName": "Huyện Hoài Đức",
+        "fullNameEn": "Hoai Duc District"
+      },
+      {
+        "id": "275",
+        "name": "Quốc Oai",
+        "nameEn": "Quoc Oai",
+        "fullName": "Huyện Quốc Oai",
+        "fullNameEn": "Quoc Oai District"
+      },
+      {
+        "id": "276",
+        "name": "Thạch Thất",
+        "nameEn": "Thach That",
+        "fullName": "Huyện Thạch Thất",
+        "fullNameEn": "Thach That District"
+      },
+      {
+        "id": "277",
+        "name": "Chương Mỹ",
+        "nameEn": "Chuong My",
+        "fullName": "Huyện Chương Mỹ",
+        "fullNameEn": "Chuong My District"
+      },
+      {
+        "id": "278",
+        "name": "Thanh Oai",
+        "nameEn": "Thanh Oai",
+        "fullName": "Huyện Thanh Oai",
+        "fullNameEn": "Thanh Oai District"
+      },
+      {
+        "id": "279",
+        "name": "Thường Tín",
+        "nameEn": "Thuong Tin",
+        "fullName": "Huyện Thường Tín",
+        "fullNameEn": "Thuong Tin District"
+      },
+      {
+        "id": "280",
+        "name": "Phú Xuyên",
+        "nameEn": "Phu Xuyen",
+        "fullName": "Huyện Phú Xuyên",
+        "fullNameEn": "Phu Xuyen District"
+      },
+      {
+        "id": "281",
+        "name": "Ứng Hòa",
+        "nameEn": "Ung Hoa",
+        "fullName": "Huyện Ứng Hòa",
+        "fullNameEn": "Ung Hoa District"
+      },
+      {
+        "id": "282",
+        "name": "Mỹ Đức",
+        "nameEn": "My Duc",
+        "fullName": "Huyện Mỹ Đức",
+        "fullNameEn": "My Duc District"
+      }
+    ]
+  }
+}
