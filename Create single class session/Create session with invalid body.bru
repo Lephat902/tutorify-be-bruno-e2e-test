@@ -1,0 +1,52 @@
+meta {
+  name: Create session with invalid body
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "",
+    "startDate": "{{yesterday}}",
+    "timeSlots": [
+      {
+        "startTime": "39:00",
+        "endTime": "21:00",
+        "weekday": "MOONDAY"
+      }
+    ],
+    "numberOfSessionsToCreate": 11,
+    "endDateForRecurringSessions": "{{date_after_today_31_days}}",
+    "useDefaultAddress": false
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 6
+  res.body: contains title should not be empty
+  res.responseTime: lte {{medium_response_time}}
+  res.body: contains timeSlots.0.Invalid time format. Time should be in HH:mm format.
+  res.body: contains timeSlots.0.weekday must be one of the following values: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+  res.body: contains numberOfSessionsToCreate must not be greater than 10
+  res.body: contains startDate must be greater than or equal to today's date.
+  res.body: contains The endDateForRecurringSessions must be within 30 days from today.
+}
+
+script:pre-request {
+  const today = new Date();
+  
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  bru.setVar("yesterday", yesterday.toISOString());
+  
+  const dateAfterToday31Days = new Date(today);
+  dateAfterToday31Days.setDate(dateAfterToday31Days.getDate() + 31);
+  bru.setVar('date_after_today_31_days', dateAfterToday31Days.toISOString());
+}
