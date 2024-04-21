@@ -11,14 +11,20 @@ post {
 }
 
 body:graphql {
-  query Query {
-    districts(districtCode: "01") {
+  query Query($districtCode: String!) {
+    districts(districtCode: $districtCode) {
       id
       name
       nameEn
       fullName
       fullNameEn
     }
+  }
+}
+
+body:graphql:vars {
+  {
+    "districtCode": "01"
   }
 }
 

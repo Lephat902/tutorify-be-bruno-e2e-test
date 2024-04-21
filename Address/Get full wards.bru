@@ -11,8 +11,8 @@ post {
 }
 
 body:graphql {
-  query Query {
-    wards(districtCode: "001") {
+  query Query ($districtCode: String!){
+    wards(districtCode: $districtCode) {
       id
       name
       nameEn
@@ -20,6 +20,16 @@ body:graphql {
       fullNameEn
     }
   }
+}
+
+body:graphql:vars {
+  {
+    "districtCode": "001"
+  }
+}
+
+assert {
+  res.status: eq 200
 }
 
 tests {
