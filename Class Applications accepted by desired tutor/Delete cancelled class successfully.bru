@@ -1,0 +1,17 @@
+meta {
+  name: Delete cancelled class successfully
+  type: http
+  seq: 14
+}
+
+delete {
+  url: {{base_url}}/classes/{{created_class_id}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+  res.body: isTruthy 1
+}

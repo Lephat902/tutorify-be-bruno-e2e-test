@@ -1,0 +1,20 @@
+meta {
+  name: 1st tutor approve tutoring request
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url}}/classes/applications/{{1st_tutor_application_id}}/approve
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{1st_tutor_access_token}}
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
