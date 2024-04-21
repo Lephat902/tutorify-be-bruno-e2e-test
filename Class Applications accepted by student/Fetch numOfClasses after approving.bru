@@ -1,0 +1,31 @@
+meta {
+  name: Fetch numOfClasses after approving
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($tutorId: String!) {
+    tutor(id: $tutorId) {
+      numOfClasses
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{sample_tutor_id_1}}"
+  }
+}
+
+assert {
+  res.body.data.tutor.id: eq {{sample_tutor_id_1}}
+  res.body.data.tutor.numOfClasses - 1: eq {{numOfClasses}} 
+}
