@@ -1,0 +1,32 @@
+meta {
+  name: Verify class is deleted
+  type: graphql
+  seq: 19
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($classId: String!) {
+    class(id: $classId) {
+      id
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{created_class_id}}"
+  }
+}
+
+assert {
+  res.body.data.class: isNull {{user_id_to_block}}
+  res.body.errors: isDefined
+  res.body.errors[0].message: contains 404
+}

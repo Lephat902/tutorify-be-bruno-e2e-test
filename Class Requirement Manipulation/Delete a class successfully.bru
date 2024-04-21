@@ -1,0 +1,16 @@
+meta {
+  name: Delete a class successfully
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{base_url}}/classes/{{created_class_id}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}

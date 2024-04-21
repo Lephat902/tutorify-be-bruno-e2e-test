@@ -1,0 +1,18 @@
+meta {
+  name: Cannot delete assigned class
+  type: http
+  seq: 13
+}
+
+delete {
+  url: {{base_url}}/classes/{{created_class_id}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{medium_response_time}}
+  res.body: length 1
+  res.body: contains Class is settled! If you mean to cancel this class, contact the manager of the system for support
+}

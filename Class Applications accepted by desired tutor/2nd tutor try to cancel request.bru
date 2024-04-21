@@ -1,0 +1,22 @@
+meta {
+  name: 2nd tutor try to cancel request
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{base_url}}/classes/applications/{{2nd_tutor_application_id}}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{2nd_tutor_access_token}}
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{medium_response_time}}
+  res.body: length 1
+  res.body: contains Cannot cancelled application with status other than PENDING
+}

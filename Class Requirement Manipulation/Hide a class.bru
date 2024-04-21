@@ -1,0 +1,16 @@
+meta {
+  name: Hide a class
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{base_url}}/classes/{{created_class_id}}/hide
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}

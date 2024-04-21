@@ -1,7 +1,7 @@
 meta {
   name: Create a class successfully
   type: http
-  seq: 5
+  seq: 6
 }
 
 post {
@@ -33,5 +33,5 @@ assert {
 }
 
 script:post-response {
-  bru.setVar('created_class_id', res.body.id);
+  bru.setVar("created_class_id", res.body.id);
 }

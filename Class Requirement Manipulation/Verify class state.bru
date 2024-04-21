@@ -1,7 +1,7 @@
 meta {
-  name: Verify class is deleted
+  name: Verify class state
   type: graphql
-  seq: 11
+  seq: 15
 }
 
 post {
@@ -14,6 +14,8 @@ body:graphql {
   query ExampleQuery($classId: String!) {
     class(id: $classId) {
       id
+      status
+      isHidden
     }
   }
   
@@ -26,7 +28,7 @@ body:graphql:vars {
 }
 
 assert {
-  res.body.data.class: isNull {{user_id_to_block}}
-  res.body.errors: isDefined
-  res.body.errors[0].message: contains 404
+  res.body.data.class.id: eq {{created_class_id}}
+  res.body.data.class.status: eq UNASSIGNED
+  res.body.data.class.isHidden: isTruthy
 }

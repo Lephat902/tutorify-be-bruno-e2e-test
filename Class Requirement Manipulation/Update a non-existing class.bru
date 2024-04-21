@@ -1,11 +1,11 @@
 meta {
-  name: Update a class with non-existing class category
+  name: Update a non-existing class
   type: http
   seq: 7
 }
 
 patch {
-  url: {{base_url}}/classes/{{created_class_id}}
+  url: {{base_url}}/classes/44099335-7fe0-41de-a364-713c535654ba
   body: json
   auth: inherit
 }
@@ -30,6 +30,6 @@ body:json {
 assert {
   res.status: eq 400
   res.body: length 1
-  res.body: contains One or more provided classCategoryIds are invalid.
+  res.body: contains Class not found.
   res.responseTime: lte {{medium_response_time}}
 }

@@ -1,0 +1,20 @@
+meta {
+  name: 2nd tutor cancel the application
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{base_url}}/classes/applications/{{2nd_tutor_application_id}}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{2nd_tutor_access_token}}
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Student reject 2nd tutor's application
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{base_url}}/classes/applications/{{2nd_tutor_application_id}}/reject
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
