@@ -1,0 +1,20 @@
+meta {
+  name: Cancel a class
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{base_url}}/classes/{{created_class_id}}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
