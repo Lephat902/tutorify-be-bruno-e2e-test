@@ -1,7 +1,7 @@
 meta {
-  name: Create a feedback with a rate smaller than 1
+  name: Create a feedback with no rating
   type: http
-  seq: 8
+  seq: 5
 }
 
 post {
@@ -12,13 +12,12 @@ post {
 
 body:json {
   {
-    "text": "This is the content of the feedback",
-    "rate": 0
+    "text": "This is the content of the feedback"
   }
 }
 
 assert {
   res.status: eq 400
   res.responseTime: lte {{medium_response_time}}
-  res.body: contains rate must not be less than 1
+  res.body: contains rate must be an integer number
 }

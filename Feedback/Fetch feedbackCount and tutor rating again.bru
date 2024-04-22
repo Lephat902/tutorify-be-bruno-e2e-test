@@ -1,7 +1,7 @@
 meta {
-  name: Fetch feedbackCount before creating a feedback
+  name: Fetch feedbackCount and tutor rating again
   type: graphql
-  seq: 9
+  seq: 11
 }
 
 post {
@@ -27,8 +27,6 @@ body:graphql:vars {
 
 assert {
   res.status: eq 200
-}
-
-script:post-response {
-  bru.setVar("feedbackCount", res.body.data.tutor.feedbackCount)
+  res.responseTime: lte {{low_response_time}}
+  res.body.data.tutor.feedbackCount - 1: eq {{feedbackCount}}
 }
