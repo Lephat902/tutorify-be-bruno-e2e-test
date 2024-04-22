@@ -1,5 +1,5 @@
 meta {
-  name: Fetch feedbackCount and tutor rating again
+  name: Fetch fb count and tutor rating after del the fb
   type: graphql
   seq: 11
 }
@@ -13,6 +13,7 @@ post {
 body:graphql {
   query ExampleQuery($tutorId: String!) {
     tutor(id: $tutorId) {
+      totalFeedbackRating
       feedbackCount
       id
     }
@@ -26,7 +27,7 @@ body:graphql:vars {
 }
 
 assert {
+  res.body.data.tutor.feedbackCount: eq {{feedbackCount}}
   res.status: eq 200
-  res.responseTime: lte {{low_response_time}}
-  res.body.data.tutor.feedbackCount - 1: eq {{feedbackCount}}
+  res.body.data.tutor.totalFeedbackRating: eq {{totalFeedbackRating}}
 }

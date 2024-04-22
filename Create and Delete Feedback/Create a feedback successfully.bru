@@ -1,7 +1,7 @@
 meta {
-  name: Create a feedback with a rating greater than 5
+  name: Create a feedback successfully
   type: http
-  seq: 7
+  seq: 8
 }
 
 post {
@@ -13,12 +13,17 @@ post {
 body:json {
   {
     "text": "This is the content of the feedback",
-    "rate": 6
+    "rate": 4
   }
 }
 
 assert {
-  res.body: contains rate must not be greater than 5
-  res.status: eq 400
   res.responseTime: lte {{medium_response_time}}
+  res.status: eq 201
+  res.body.text: eq This is the content of the feedback
+  res.body.rate: eq 4
+}
+
+script:post-response {
+  bru.setVar("feedback_id", res.body.id);
 }

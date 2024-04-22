@@ -1,7 +1,7 @@
 meta {
-  name: Create a feedback with a non-integer rating
+  name: Create a feedback with an empty text
   type: http
-  seq: 6
+  seq: 2
 }
 
 post {
@@ -12,13 +12,13 @@ post {
 
 body:json {
   {
-    "text": "This is the content of the feedback",
-    "rate": 4.5
+    "text": "",
+    "rate": 4
   }
 }
 
 assert {
   res.status: eq 400
   res.responseTime: lte {{medium_response_time}}
-  res.body: contains rate must be an integer number
+  res.body: contains text should not be empty
 }

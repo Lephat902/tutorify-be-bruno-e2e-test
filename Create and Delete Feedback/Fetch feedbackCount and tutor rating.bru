@@ -1,7 +1,7 @@
 meta {
   name: Fetch feedbackCount and tutor rating
   type: graphql
-  seq: 9
+  seq: 7
 }
 
 post {
@@ -13,6 +13,7 @@ post {
 body:graphql {
   query ExampleQuery($tutorId: String!) {
     tutor(id: $tutorId) {
+     	totalFeedbackRating
       feedbackCount
       id
     }
@@ -31,4 +32,5 @@ assert {
 
 script:post-response {
   bru.setVar("feedbackCount", res.body.data.tutor.feedbackCount)
+  bru.setVar("totalFeedbackRating", res.body.data.tutor.totalFeedbackRating);
 }

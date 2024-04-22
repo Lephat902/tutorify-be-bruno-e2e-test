@@ -1,7 +1,7 @@
 meta {
   name: Delete a feedback of a tutor successfully
   type: http
-  seq: 13
+  seq: 10
 }
 
 delete {
@@ -12,5 +12,5 @@ delete {
 
 assert {
   res.status: eq 200
-  res.responseTime: lte {{low_response_time}}
+  res.responseTime: lte {{medium_response_time}}
 }

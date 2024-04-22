@@ -1,7 +1,7 @@
 meta {
-  name: Get all feedbacks of a tutor with paging
+  name: paging-default sorting-default query
   type: graphql
-  seq: 3
+  seq: 4
 }
 
 post {
@@ -29,6 +29,7 @@ body:graphql {
           username
           id
         }
+        tutorId
       }
       totalCount
     }
@@ -38,16 +39,29 @@ body:graphql {
 body:graphql:vars {
   {
     "tutorId": "{{sample_tutor_id}}",
-    "page": 1,
-    "limit": 2
+    "page": 2,
+    "limit": 5
   }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
 }
 
 tests {
   
   test("should get a correct response", function (){
     const responseData = res.getBody();
+    const feedbacks = responseData.data.feedbacks.results;
+   const tutorId = bru.getEnvVar("sample_tutor_id");
     
-    expect(responseData.data.feedbacks.results.length).to.be.most(2).and.to.be.most(responseData.data.feedbacks.totalCount);
+    //Check paging
+    expect(responseData.data.feedbacks.results.length).to.be.most(5).and.to.be.most(responseData.data.feedbacks.totalCount);
+    
+    // Check sort
+    expect(feedbacks.every((value, index, array) => {
+     return value.tutorId === tutorId && 
+      (index === 0 || value.createdAt <= array[index - 1].createdAt) })).to.be.equal(true)
   });
 }

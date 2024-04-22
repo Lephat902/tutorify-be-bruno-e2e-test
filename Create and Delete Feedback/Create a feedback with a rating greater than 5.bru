@@ -1,7 +1,7 @@
 meta {
-  name: Create a feedback with an empty text
+  name: Create a feedback with a rating greater than 5
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
@@ -12,13 +12,13 @@ post {
 
 body:json {
   {
-    "text": "",
-    "rate": 4
+    "text": "This is the content of the feedback",
+    "rate": 6
   }
 }
 
 assert {
+  res.body: contains rate must not be greater than 5
   res.status: eq 400
   res.responseTime: lte {{medium_response_time}}
-  res.body: contains text should not be empty
 }
