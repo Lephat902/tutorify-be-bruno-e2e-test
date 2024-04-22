@@ -19,5 +19,5 @@ body:json {
 assert {
   res.status: eq 400
   res.responseTime: lte {{medium_response_time}}
-  res.body: contains rate must be a number conforming to the specified constraints
+  res.body: contains rate must be an integer number
 }
