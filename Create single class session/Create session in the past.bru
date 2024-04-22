@@ -1,0 +1,71 @@
+meta {
+  name: Create session in the past
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "{{random_title}}",
+    "timeSlots": [
+      {
+        "startTime": "00:00",
+        "endTime": "00:30",
+        "weekday": "MONDAY"
+      }
+    ],
+    "useDefaultAddress": true
+  }
+}
+
+assert {
+  res.responseTime: lte {{medium_response_time}}
+  res.status: eq 400
+}
+
+script:pre-request {
+  const isTimeBetweenFirst30MinOfDay = () => {
+      const now = new Date();
+    
+      // Set start to 00:00 of today
+      const start = new Date(now);
+      start.setUTCHours(0, 0, 0, 0);
+    
+      // Set end to 00:30 of today
+      const end = new Date(now);
+      end.setUTCHours(0, 30, 0, 0);
+    
+      if (now >= start && now <= end) {
+          return true;
+      }
+      return false;
+  };
+  
+  const isFirst30MinOfDayRightNow = isTimeBetweenFirst30MinOfDay();
+  bru.setVar("first_30_min_of_day", isFirst30MinOfDayRightNow);
+  // if current time falls within this duration then set title to '' to prevent its creation
+  const titleToCreate = isFirst30MinOfDayRightNow ? '' : utils.generateRandomString(10);
+  bru.setVar("random_title", titleToCreate);
+}
+
+tests {
+  const isFirst30MinOfDayRightNow = bru.getVar('first_30_min_of_day');
+  
+  // The timeslot specified in the body is 00:00 -> 00:30. If the current time falls within this duration, 
+  // the session should have been created. However, we have intentionally set its title to '' to prevent its creation.
+  // If the current time is outside this duration, it means the session is in the past. In this case, an error is thrown.
+  if (!isFirst30MinOfDayRightNow) {
+    test("Should return correct error message", () => {
+        expect(res.body.length).to.equal(1);
+        expect(res.body).to.contain("Endtime cannot be in the past");
+      }
+    )
+  }
+  
+}

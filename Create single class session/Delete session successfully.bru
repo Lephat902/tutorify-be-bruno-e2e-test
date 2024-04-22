@@ -1,0 +1,16 @@
+meta {
+  name: Delete session successfully
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{base_url}}/classess/sessions/{{created_class_session_id}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.responseTime: lte {{medium_response_time}}
+  res.status: eq 200
+}

@@ -1,0 +1,61 @@
+meta {
+  name: Verify session created
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($classId: String, $limit: Int, $page: Int, $q: String) {
+    classSessions(classId: $classId, limit: $limit, page: $page, q: $q) {
+      results {
+        id
+        class {
+          classId
+        }
+      }
+      totalCount
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{class_id_to_create_session}}",
+    "limit": 1,
+    "page": 1,
+    "q": "{{random_title}}"
+  }
+}
+
+assert {
+  res.body.data.classSessions.results: length 1
+}
+
+script:post-response {
+  if (res.body.data.classSessions.results?.[0]?.id) {
+    bru.setVar('created_class_session_id', res.body.data.classSessions.results[0].id);
+  } else {
+    // Loop until id is returned
+    bru.setNextRequest("Verify session created");
+  }
+}
+
+tests {
+  test("should return sessions of specified class", () => {
+    for (const session of res.body.data.classSessions.results) {
+      expect(session.class.classId).to.equal(bru.getEnvVar('class_id_to_create_session'));
+    }
+  });
+  
+  test("should create expected number of sessions", () => {
+    const lastestSessionsCount = res.body.data.classSessions.totalCount;
+    expect(bru.getVar('sessions_total_count') + 1).to.equal(lastestSessionsCount);
+  })
+}
