@@ -1,0 +1,31 @@
+meta {
+  name: Fetch feedbackCount after deleting the feedback
+  type: graphql
+  seq: 14
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($tutorId: String!) {
+    tutor(id: $tutorId) {
+      feedbackCount
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{sample_tutor_id}}"
+  }
+}
+
+assert {
+  res.body.data.tutor.feedbackCount: eq {{feedbackCount}}
+  res.status: eq 200
+}

@@ -1,13 +1,13 @@
 meta {
   name: Create a feedback with no rate
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
   url: {{base_url}}/tutors/{{sample_tutor_id}}/feedbacks
   body: json
-  auth: none
+  auth: inherit
 }
 
 body:json {

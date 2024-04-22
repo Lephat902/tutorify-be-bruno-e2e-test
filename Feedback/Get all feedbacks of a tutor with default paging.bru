@@ -1,7 +1,7 @@
 meta {
-  name: Get all feedbacks of a tutor
+  name: Get all feedbacks of a tutor with default paging
   type: graphql
-  seq: 1
+  seq: 2
 }
 
 post {
@@ -37,7 +37,7 @@ body:graphql {
 
 body:graphql:vars {
   {
-    "tutorId": "65df11725d9c3155d4530033"
+    "tutorId": "{{sample_tutor_id}}"
   }
 }
 
@@ -47,15 +47,10 @@ assert {
 }
 
 tests {
-  const fs = require('node:fs');
-  const path = require("path");
-  const cwd = bru.cwd();
   
-  test("should get full provinces", function (){
-    const outputData = res.getBody();
-  const expectedData = JSON.parse(fs.readFileSync(path.join(cwd, "test-data/feedbacks.json"),{ encoding: 'utf8', flag: 'r' }));
-  
-   expect(outputData).to.deep.equal(expectedData);
-     
+  test("should get a correct response", function (){
+    const responseData = res.getBody();
+    
+    expect(responseData.data.feedbacks.results.length).to.be.most(10).and.to.be.most(responseData.data.feedbacks.totalCount);
   });
 }
