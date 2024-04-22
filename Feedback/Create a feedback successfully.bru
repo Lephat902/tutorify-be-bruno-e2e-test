@@ -1,0 +1,25 @@
+meta {
+  name: Create a feedback successfully
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/tutors/{{sample_tutor_id}}/feedbacks
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "text": "This is the content of the feedback",
+    "rate": 4
+  }
+}
+
+assert {
+  res.responseTime: lte {{medium_response_time}}
+  res.status: eq 201
+  res.body.text: eq This is the content of the feedback
+  res.body.rate: eq 4
+}

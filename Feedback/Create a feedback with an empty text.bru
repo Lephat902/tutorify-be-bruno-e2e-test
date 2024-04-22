@@ -1,0 +1,24 @@
+meta {
+  name: Create a feedback with an empty text
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/tutors/{{sample_tutor_id}}/feedbacks
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "text": "",
+    "rate": 4
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{medium_response_time}}
+  res.body: contains text should not be empty
+}
