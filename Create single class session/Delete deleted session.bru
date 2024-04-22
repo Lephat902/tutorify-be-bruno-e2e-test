@@ -1,7 +1,7 @@
 meta {
-  name: Delete session successfully
+  name: Delete deleted session
   type: http
-  seq: 10
+  seq: 15
 }
 
 delete {
@@ -12,5 +12,7 @@ delete {
 
 assert {
   res.responseTime: lte {{medium_response_time}}
-  res.status: eq 200
+  res.status: eq 404
+  res.body: length 1
+  res.body[0]: matches Class session [0-9a-f]{24} not found
 }

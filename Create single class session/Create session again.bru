@@ -1,0 +1,35 @@
+meta {
+  name: Create session again
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "{{random_title}}",
+    "timeSlots": [
+      {
+        "startTime": "00:00",
+        "endTime": "23:59",
+        "weekday": "SUNDAY"
+      }
+    ],
+    "useDefaultAddress": true
+  }
+}
+
+assert {
+  res.responseTime: lte {{medium_response_time}}
+  res.status: eq 201
+}
+
+script:pre-request {
+  const randomTitle = utils.generateRandomString(10);
+  bru.setVar('random_title', randomTitle);
+}
