@@ -1,0 +1,24 @@
+meta {
+  name: Upload pdf porfolio with invalid size
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/files?uploadType=portfolio
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: portfolio
+}
+
+body:multipart-form {
+  file: @file(test-data/document.pdf)
+}
+
+assert {
+  res.status: eq 413
+  res.responseTime: lte {{high_response_time}}
+}
