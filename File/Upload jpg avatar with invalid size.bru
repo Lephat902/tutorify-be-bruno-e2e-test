@@ -1,0 +1,25 @@
+meta {
+  name: Upload jpg avatar with invalid size
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/files?uploadType=avatar
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: avatar
+}
+
+body:multipart-form {
+  file: @file(test-data/sample-1.jpg)
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{upload_file_response_time}}
+  res.body: contains Maximum image size is 1MB.
+}

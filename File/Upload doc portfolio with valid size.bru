@@ -1,0 +1,25 @@
+meta {
+  name: Upload doc portfolio with valid size
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/files?uploadType=portfolio
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: portfolio
+}
+
+body:multipart-form {
+  file: @file(test-data/sample-1.doc)
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{upload_file_response_time}}
+  res.body: contains The valid file format are jpg, png, and pdf.
+}

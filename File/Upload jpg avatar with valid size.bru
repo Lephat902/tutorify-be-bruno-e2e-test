@@ -1,0 +1,32 @@
+meta {
+  name: Upload jpg avatar with valid size
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/files?uploadType=avatar
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: avatar
+}
+
+body:multipart-form {
+  file: @file(test-data/sample-2.jpg)
+}
+
+assert {
+  res.status: eq 201
+  res.responseTime: lte {{upload_file_response_time}}
+  res.body.url: contains sample-2.jpg
+  res.body.size: lte 1048576
+  res.body.title: eq sample-2.jpg
+}
+
+script:post-response {
+  bru.setVar("file_id",res.body.id)
+  bru.setVar("file_url", res.body.url)
+}

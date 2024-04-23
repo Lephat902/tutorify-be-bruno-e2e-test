@@ -1,0 +1,32 @@
+meta {
+  name: Upload pdf portfolio with valid size
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base_url}}/files?uploadType=portfolio
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: portfolio
+}
+
+body:multipart-form {
+  file: @file(test-data/sample-3.pdf)
+}
+
+assert {
+  res.status: eq 201
+  res.responseTime: lte 15000
+  res.body.url: contains sample-3.pdf
+  res.body.size: lte 20971520
+  res.body.title: eq sample-3.pdf
+}
+
+script:post-response {
+  bru.setVar("file_id",res.body.id)
+  bru.setVar("file_url", res.body.url)
+}

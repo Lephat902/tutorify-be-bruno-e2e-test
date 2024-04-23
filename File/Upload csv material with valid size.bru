@@ -1,0 +1,25 @@
+meta {
+  name: Upload csv material with valid size
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{base_url}}/files?uploadType=material
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: material
+}
+
+body:multipart-form {
+  file: @file(test-data/sample-1.csv)
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{upload_file_response_time}}
+  res.body: contains The valid file formats are jpg, jpeg, png, pdf, doc, docx, ppt, pptx, xls, xlsx, and txt.
+}

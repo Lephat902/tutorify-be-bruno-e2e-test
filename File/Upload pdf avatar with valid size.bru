@@ -1,0 +1,25 @@
+meta {
+  name: Upload pdf avatar with valid size
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/files?uploadType=avatar
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: avatar
+}
+
+body:multipart-form {
+  file: @file(test-data/sample-3.pdf)
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{upload_file_response_time}}
+  res.body: contains The valid file format are jpg, and png.
+}
