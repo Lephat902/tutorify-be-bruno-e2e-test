@@ -30,24 +30,7 @@ assert {
 }
 
 script:pre-request {
-  const isTimeBetweenFirst30MinOfDay = () => {
-      const now = new Date();
-    
-      // Set start to 00:00 of today
-      const start = new Date(now);
-      start.setUTCHours(0, 0, 0, 0);
-    
-      // Set end to 00:30 of today
-      const end = new Date(now);
-      end.setUTCHours(0, 30, 0, 0);
-    
-      if (now >= start && now <= end) {
-          return true;
-      }
-      return false;
-  };
-  
-  const isFirst30MinOfDayRightNow = isTimeBetweenFirst30MinOfDay();
+  const isFirst30MinOfDayRightNow = utils.isTimeBetweenFirst30MinOfDay();
   bru.setVar("first_30_min_of_day", isFirst30MinOfDayRightNow);
   // if current time falls within this duration then set title to '' to prevent its creation
   const titleToCreate = isFirst30MinOfDayRightNow ? '' : utils.generateRandomString(10);

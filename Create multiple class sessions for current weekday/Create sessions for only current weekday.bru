@@ -1,0 +1,81 @@
+meta {
+  name: Create sessions for only current weekday
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "{{random_title}}",
+    "timeSlots": [
+      {
+        "startTime": "00:00",
+        "endTime": "00:30",
+        "weekday": "{{today_weekday_str}}"
+      }
+    ],
+    "numberOfSessionsToCreate": {{num_of_sessions_to_create}},
+    "useDefaultAddress": false,
+    "isOnline": true
+  }
+}
+
+assert {
+  res.responseTime: lte {{high_response_time}}
+  res.status: eq 201
+}
+
+script:pre-request {
+  const isFirst30MinOfDayRightNow = utils.isTimeBetweenFirst30MinOfDay();
+  bru.setVar("first_30_min_of_day", isFirst30MinOfDayRightNow);
+  
+  const titleToCreate = utils.generateRandomString(10);
+  bru.setVar("random_title", titleToCreate);
+  
+  const todayWeekdayString = utils.getDayStringOfToday();
+  bru.setVar("today_weekday_str", todayWeekdayString);
+  
+  bru.setVar("num_of_sessions_to_create", 2);
+}
+
+tests {
+  const getDateAfterTodayNDays = (n) => {
+      const now = new Date();
+      now.setDate(now.getDate() + n);
+      return now;
+  };
+  const getTestCases = (numOfSessionsToCreate, startDay) => {
+      const testCases = [];
+      for (let i = 0; i < numOfSessionsToCreate; i++) {
+          testCases.push(startDay + i * 7);
+      }
+      return testCases;
+  };
+  const isFirst30MinOfDayRightNow = bru.getVar('first_30_min_of_day');
+  const numOfSessionsToCreate = bru.getVar('num_of_sessions_to_create');
+  const startDay = isFirst30MinOfDayRightNow ? 0 : 7;
+  const testCases = getTestCases(numOfSessionsToCreate, startDay);
+  
+  const sessions = res.body;
+  
+  // Check that two sessions were created
+  test(`Should create ${numOfSessionsToCreate} sessions`, () => {
+      expect(sessions.length).to.equal(numOfSessionsToCreate);
+  });
+  
+  testCases.forEach((daysToAdd, index) => {
+      test(`Should create session ${index + 1} that's ${daysToAdd} days from now`, () => {
+          // Check that the session is the correct number of days from now
+          const expectedDate = getDateAfterTodayNDays(daysToAdd);
+          const ithSessionDate = new Date(sessions[index].endDatetime);
+  
+          expect(ithSessionDate.getDate()).to.equal(expectedDate.getDate());
+      });
+  });
+}

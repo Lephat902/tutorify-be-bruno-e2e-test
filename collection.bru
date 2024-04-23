@@ -7,7 +7,7 @@ auth:bearer {
 }
 
 script:pre-request {
-  // Pre-request Script
+  // Utility methods
   const utils = {
       generateRandomString: (length) => {
           const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -18,6 +18,29 @@ script:pre-request {
           }
           return randomString;
       },
-  };
+      isTimeBetweenFirst30MinOfDay: () => {
+          const now = new Date();
   
+          // Set start to 00:00 of today
+          const start = new Date(now);
+          start.setUTCHours(0, 0, 0, 0);
+  
+          // Set end to 00:30 of today
+          const end = new Date(now);
+          end.setUTCHours(0, 30, 0, 0);
+  
+          if (now >= start && now <= end) {
+              return true;
+          }
+          return false;
+      },
+      getDayString: (dayNumber) => {
+          const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+          return days[dayNumber];
+      },
+      getDayStringOfToday: () => {
+          const now = new Date();
+          return utils.getDayString(now.getUTCDay());
+      },
+  };
 }
