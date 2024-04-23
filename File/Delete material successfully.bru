@@ -1,0 +1,20 @@
+meta {
+  name: Delete material successfully
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{base_url}}/files/{{file_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{system_token}}
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{high_response_time}}
+}

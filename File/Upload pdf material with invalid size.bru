@@ -1,0 +1,24 @@
+meta {
+  name: Upload pdf material with invalid size
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url}}/files?uploadType=material
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: material
+}
+
+body:multipart-form {
+  file: @file(test-data/document.pdf)
+}
+
+assert {
+  res.status: eq 413
+  res.responseTime: lte {{high_response_time}}
+}

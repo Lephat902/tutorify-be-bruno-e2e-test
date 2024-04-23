@@ -1,0 +1,31 @@
+meta {
+  name: Upload pdf material with valid size
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{base_url}}/files?uploadType=material
+  body: multipartForm
+  auth: none
+}
+
+query {
+  uploadType: material
+}
+
+body:multipart-form {
+  file: @file(test-data/Data Structure and Algorithm Lab Introduction.pptx)
+}
+
+assert {
+  res.status: eq 201
+  res.responseTime: lte 15000
+  res.body.url: contains Data Structure and Algorithm Lab Introduction.pptx
+  res.body.size: lte 20971520
+  res.body.title: eq Data Structure and Algorithm Lab Introduction.pptx
+}
+
+script:post-response {
+  bru.setVar("file_id",res.body.id)
+}
