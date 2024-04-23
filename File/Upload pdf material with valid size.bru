@@ -1,7 +1,7 @@
 meta {
   name: Upload pdf material with valid size
   type: http
-  seq: 11
+  seq: 13
 }
 
 post {
@@ -28,4 +28,5 @@ assert {
 
 script:post-response {
   bru.setVar("file_id",res.body.id)
+  bru.setVar("file_url", res.body.url)
 }

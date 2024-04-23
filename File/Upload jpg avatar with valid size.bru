@@ -28,4 +28,5 @@ assert {
 
 script:post-response {
   bru.setVar("file_id",res.body.id)
+  bru.setVar("file_url", res.body.url)
 }
