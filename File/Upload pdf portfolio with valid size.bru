@@ -1,7 +1,7 @@
 meta {
-  name: Upload pdf porfolio with valid size
+  name: Upload pdf portfolio with valid size
   type: http
-  seq: 7
+  seq: 8
 }
 
 post {
@@ -28,4 +28,5 @@ assert {
 
 script:post-response {
   bru.setVar("file_id",res.body.id)
+  bru.setVar("file_url", res.body.url)
 }
