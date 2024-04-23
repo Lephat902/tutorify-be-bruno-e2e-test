@@ -1,0 +1,34 @@
+meta {
+  name: Fetch feedbackCount and tutor rating again
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($tutorId: String!) {
+    tutor(id: $tutorId) {
+     	totalFeedbackRating
+      feedbackCount
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{sample_tutor_id}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{low_response_time}}
+  res.body.data.tutor.feedbackCount - 1: eq {{feedbackCount}}
+  res.body.data.tutor.totalFeedbackRating - 4: eq {{totalFeedbackRating}}
+}

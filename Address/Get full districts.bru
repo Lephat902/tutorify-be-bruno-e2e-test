@@ -5,14 +5,14 @@ meta {
 }
 
 post {
-  url: {{base_url}}/graphql
+  url: {{graphql_base_url}}
   body: graphql
   auth: none
 }
 
 body:graphql {
-  query Query {
-    districts(districtCode: "01") {
+  query Query($districtCode: String!) {
+    districts(districtCode: $districtCode) {
       id
       name
       nameEn
@@ -22,8 +22,15 @@ body:graphql {
   }
 }
 
+body:graphql:vars {
+  {
+    "districtCode": "01"
+  }
+}
+
 assert {
   res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
 }
 
 tests {

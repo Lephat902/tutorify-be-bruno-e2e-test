@@ -1,0 +1,66 @@
+meta {
+  name: default paging-default sorting-default query
+  type: graphql
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query Query($tutorId: String) {
+    feedbacks(tutorId: $tutorId) {
+      results {
+        id
+        rate
+        text
+        createdAt
+        updatedAt
+        user {
+          avatar {
+            id
+            url
+            title
+            size
+          }
+          username
+          id
+        }
+        tutorId
+      }
+      totalCount
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{sample_tutor_id}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
+
+tests {
+  
+  test("should get a correct response", function (){
+    const responseData = res.getBody();
+    const defaultLimit = parseInt(bru.getEnvVar("default_limit"));
+    const feedbacks = responseData.data.feedbacks.results;
+   const tutorId = bru.getEnvVar("sample_tutor_id");
+    
+    //Check paging
+    expect(responseData.data.feedbacks.results.length).to.be.most(defaultLimit).and.to.be.most(responseData.data.feedbacks.totalCount);
+    
+    // Check sort
+    expect(feedbacks.every((value, index, array) => {
+     return value.tutorId === tutorId && 
+      (index === 0 || value.createdAt <= array[index - 1].createdAt) })).to.be.equal(true)
+  });
+}

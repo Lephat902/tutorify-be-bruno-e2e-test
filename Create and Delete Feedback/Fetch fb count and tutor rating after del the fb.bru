@@ -1,0 +1,33 @@
+meta {
+  name: Fetch fb count and tutor rating after del the fb
+  type: graphql
+  seq: 11
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($tutorId: String!) {
+    tutor(id: $tutorId) {
+      totalFeedbackRating
+      feedbackCount
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{sample_tutor_id}}"
+  }
+}
+
+assert {
+  res.body.data.tutor.feedbackCount: eq {{feedbackCount}}
+  res.status: eq 200
+  res.body.data.tutor.totalFeedbackRating: eq {{totalFeedbackRating}}
+}
