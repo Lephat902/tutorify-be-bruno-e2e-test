@@ -1,0 +1,32 @@
+meta {
+  name: Create too-short session
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Should warn session is too short",
+    "timeSlots": [
+      {
+        "startTime": "00:00",
+        "endTime": "00:15",
+        "weekday": "MONDAY"
+      }
+    ],
+    "useDefaultAddress": true
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains Time slot duration must be at least 30 minutes.
+  res.responseTime: lte {{medium_response_time}}
+}

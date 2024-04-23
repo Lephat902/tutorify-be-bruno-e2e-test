@@ -1,0 +1,36 @@
+meta {
+  name: Verify session deleted
+  type: graphql
+  seq: 11
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($classSessionId: String!) {
+    classSession(id: $classSessionId) {
+      id
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classSessionId": "{{created_class_session_id}}"
+  }
+}
+
+assert {
+  res.body.data.classSession: isNull 
+}
+
+script:post-response {
+  if (res.body.data.classSession !== null) {
+    bru.setNextRequest("Verify session deleted");
+  }
+}

@@ -1,0 +1,18 @@
+meta {
+  name: Delete deleted session
+  type: http
+  seq: 15
+}
+
+delete {
+  url: {{base_url}}/classess/sessions/{{created_class_session_id}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.responseTime: lte {{medium_response_time}}
+  res.status: eq 404
+  res.body: length 1
+  res.body[0]: matches Class session [0-9a-f]{24} not found
+}

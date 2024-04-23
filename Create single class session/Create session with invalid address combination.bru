@@ -1,0 +1,32 @@
+meta {
+  name: Create session with invalid address combination
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Should provide adress when default address not used",
+    "timeSlots": [
+      {
+        "startTime": "00:00",
+        "endTime": "00:15",
+        "weekday": "MONDAY"
+      }
+    ],
+    "useDefaultAddress": false
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 1
+  res.body: contains Address & wardId is required for non-online class
+  res.responseTime: lte {{medium_response_time}}
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Create session with empty body
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 400
+  res.body: length 5
+  res.body: contains title should not be empty
+  res.responseTime: lte {{medium_response_time}}
+  res.body: contains timeSlots should not be empty
+}
