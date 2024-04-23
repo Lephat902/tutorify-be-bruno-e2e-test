@@ -1,0 +1,122 @@
+meta {
+  name: Create sessions for only current weekday
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/classess/{{class_id_to_create_session}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "{{random_title}}",
+    "timeSlots": {{time_slots_to_create}},
+    "numberOfSessionsToCreate": {{num_of_sessions_to_create}},
+    "isOnline": true,
+    "useDefaultAddress": false,
+    "materials": [
+      {
+        "url": "https://www.youtube.com/watch?v=CSvFpBOe8eY"
+      }
+    ]
+  }
+}
+
+assert {
+  res.responseTime: lte {{high_response_time}}
+  res.status: eq 201
+}
+
+script:pre-request {
+  const isFirst30MinOfDayRightNow = utils.isTimeBetweenFirst30MinOfDay();
+  bru.setVar("first_30_min_of_day", isFirst30MinOfDayRightNow);
+  
+  const titleToCreate = utils.generateRandomString(10);
+  bru.setVar("random_title", titleToCreate);
+  
+  const numOfSessionsToCreate = utils.getRandomIntInRange(2, 10);
+  bru.setVar("num_of_sessions_to_create", numOfSessionsToCreate);
+  
+  const numOfDaysPerWeek = utils.getRandomIntInRange(2, 7);
+  const randomWeekdays = utils.getNRandomWeekdays(numOfDaysPerWeek);
+  bru.setVar("weekdays", randomWeekdays);
+  
+  const timeSlotsToCreate = randomWeekdays.map(weekday => ({
+    startTime: "00:00",
+    endTime: "00:30",
+    weekday,
+  }));
+  bru.setVar("time_slots_to_create", JSON.stringify(timeSlotsToCreate));
+}
+
+tests {
+  // HELPER METHODS
+  const storedWeekdaysStrings = bru.getEnvVar("weekdays_strings_arr");
+  const weekdaysStrings = JSON.parse(storedWeekdaysStrings.replace(/'/g, '"'));
+  const getNumberByWeekdayStr = (weekday) => {
+      return weekdaysStrings.indexOf(weekday);
+  };
+  const findNearestWeekday = (date, sortedWeekdaysInNumber) => {
+      const todayWeekday = date.getDay();
+      return sortedWeekdaysInNumber.find(weekday => todayWeekday <= weekday) || sortedWeekdaysInNumber[0];
+  };
+  const getFirstSessionDate = (weekdaysInNumber, isFirst30MinOfDay) => {
+      const date = new Date();
+      let nearestWeekday = findNearestWeekday(date, weekdaysInNumber);
+      let daysToFirstSession = (nearestWeekday - date.getUTCDay() + 7) % 7;
+    
+      // the same weekday as today but not allowed to create sessions this day
+      if (daysToFirstSession === 0 && !isFirst30MinOfDay) {
+          const tomorrow = new Date(date);
+          tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+          nearestWeekday = findNearestWeekday(tomorrow, weekdaysInNumber);
+          daysToFirstSession = (nearestWeekday - date.getUTCDay() + 7) % 7;
+          if (daysToFirstSession === 0) {
+            daysToFirstSession = 7;
+          }
+      }
+  
+      const firstSessionDate = new Date(date);
+      firstSessionDate.setUTCDate(firstSessionDate.getUTCDate() + daysToFirstSession);
+      return firstSessionDate;
+  }
+  
+  // PREPARE
+  const isFirst30MinOfDayRightNow = bru.getVar('first_30_min_of_day');
+  
+  const numOfSessionsToCreate = bru.getVar('num_of_sessions_to_create');
+  
+  const weekdays = bru.getVar("weekdays");
+  const weekdaysInNumber = weekdays.map(getNumberByWeekdayStr);
+  weekdaysInNumber.sort();
+  
+  const firstSessionDate = getFirstSessionDate(weekdaysInNumber, isFirst30MinOfDayRightNow);
+  
+  const sessions = res.body;
+  
+  // ACTION
+  // Check that a specified number of sessions were created
+  test(`Should create ${numOfSessionsToCreate} sessions`, () => {
+      expect(sessions.length).to.equal(numOfSessionsToCreate);
+  });
+  
+  test("Should create sessions created in expected dates", () => {
+      const expectedEnddate = new Date(firstSessionDate);
+      let expectedWeekdayIndex = weekdaysInNumber.indexOf(expectedEnddate.getUTCDay());
+  
+      for (const session of sessions) {
+          const sessionEndDatetime = new Date(session.endDatetime);
+  
+          expect(sessionEndDatetime.toISOString().split('T')[0]).to.equal(expectedEnddate.toISOString().split('T')[0]);
+  
+          // Update data for next iteration
+          const currentWeekdayIndex = expectedWeekdayIndex;
+          expectedWeekdayIndex = (expectedWeekdayIndex + 1) % (weekdaysInNumber.length);
+          const daysToNextSession = (weekdaysInNumber[expectedWeekdayIndex] - weekdaysInNumber[currentWeekdayIndex] + 7) % 7;
+          expectedEnddate.setUTCDate(expectedEnddate.getUTCDate() + daysToNextSession);
+      }
+  });
+}

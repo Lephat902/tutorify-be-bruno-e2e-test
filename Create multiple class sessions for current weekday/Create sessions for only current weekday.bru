@@ -64,7 +64,7 @@ tests {
   
   const sessions = res.body;
   
-  // Check that two sessions were created
+  // Check that a specified number of sessions were created
   test(`Should create ${numOfSessionsToCreate} sessions`, () => {
       expect(sessions.length).to.equal(numOfSessionsToCreate);
   });
@@ -75,7 +75,7 @@ tests {
           const expectedDate = getDateAfterTodayNDays(daysToAdd);
           const ithSessionDate = new Date(sessions[index].endDatetime);
   
-          expect(ithSessionDate.getDate()).to.equal(expectedDate.getDate());
+          expect(ithSessionDate.toISOString().split('T')[0]).to.equal(expectedDate.toISOString().split('T')[0]);
       });
   });
 }

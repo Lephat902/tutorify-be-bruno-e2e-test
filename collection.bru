@@ -7,14 +7,17 @@ auth:bearer {
 }
 
 script:pre-request {
+  const storedWeekdaysStrings = bru.getEnvVar("weekdays_strings_arr");
+  const weekdayStrings = JSON.parse(storedWeekdaysStrings.replace(/'/g, '"'));
   // Utility methods
   const utils = {
+      weekdayStrings,
+      chars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
       generateRandomString: (length) => {
-          const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
           let randomString = '';
           for (let i = 0; i < length; i++) {
-              const randomIndex = Math.floor(Math.random() * chars.length);
-              randomString += chars[randomIndex];
+              const randomIndex = Math.floor(Math.random() * utils.chars.length);
+              randomString += utils.chars[randomIndex];
           }
           return randomString;
       },
@@ -35,12 +38,30 @@ script:pre-request {
           return false;
       },
       getDayString: (dayNumber) => {
-          const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-          return days[dayNumber];
+          return utils.weekdayStrings[dayNumber];
       },
       getDayStringOfToday: () => {
           const now = new Date();
           return utils.getDayString(now.getUTCDay());
+      },
+      getRandomIntInRange: (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+      },
+      getNRandomItems: (arr, n) => {
+          let len = arr.length;
+          const result = new Array(n),
+              taken = new Array(len);
+          if (n > len)
+              throw new RangeError("getNRandomItems: more elements taken than available");
+          while (n--) {
+              const x = Math.floor(Math.random() * len);
+              result[n] = arr[x in taken ? taken[x] : x];
+              taken[x] = --len in taken ? taken[len] : len;
+          }
+          return result;
+      },
+      getNRandomWeekdays: (n) => {
+          return utils.getNRandomItems(utils.weekdayStrings, n);
       },
   };
 }

@@ -1,0 +1,46 @@
+meta {
+  name: Fetch sessions after creating sessions
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($classId: String) {
+    classSessions(classId: $classId) {
+      results {
+        id
+      }
+      totalCount
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{class_id_to_create_session}}"
+  }
+}
+
+assert {
+  res.body.data.classSessions.results: length {{num_of_sessions_to_create}}
+}
+
+script:post-response {
+  const sessionsCountToWait = bru.getVar('sessions_total_count') + bru.getVar('num_of_sessions_to_create');
+  if (res.body.data.classSessions.results.length === sessionsCountToWait) {
+    const createdSessionsIds = [];
+    for (const session of res.body.data.classSessions.results) {
+      createdSessionsIds.push(session.id);
+    }
+    bru.setVar('created_sessions_ids', createdSessionsIds);
+  } else {
+    bru.setNextRequest("Fetch sessions after creating sessions");
+  }
+}

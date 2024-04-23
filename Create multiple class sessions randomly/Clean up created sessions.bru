@@ -1,0 +1,32 @@
+meta {
+  name: Clean up created sessions
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{base_url}}/classess/sessions/{{session_id_to_delete}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.responseTime: lte {{medium_response_time}}
+  res.status: eq 200
+}
+
+script:pre-request {
+  const createdSessionsIds = bru.getVar('created_sessions_ids');
+  
+  const sessionIdToDelete = createdSessionsIds.pop();
+  bru.setVar('created_sessions_ids', createdSessionsIds);
+  bru.setVar('session_id_to_delete', sessionIdToDelete);
+}
+
+script:post-response {
+  const createdSessionsIds = bru.getVar('created_sessions_ids');
+  
+  if (createdSessionsIds.length) {
+    bru.setNextRequest("Clean up created sessions");
+  }
+}
