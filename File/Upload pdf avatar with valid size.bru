@@ -20,6 +20,6 @@ body:multipart-form {
 
 assert {
   res.status: eq 400
-  res.responseTime: lte {{high_response_time}}
+  res.responseTime: lte {{upload_file_response_time}}
   res.body: contains The valid file format are jpg, and png.
 }

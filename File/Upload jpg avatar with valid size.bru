@@ -20,7 +20,7 @@ body:multipart-form {
 
 assert {
   res.status: eq 201
-  res.responseTime: lte 8000
+  res.responseTime: lte {{upload_file_response_time}}
   res.body.url: contains sample-2.jpg
   res.body.size: lte 1048576
   res.body.title: eq sample-2.jpg

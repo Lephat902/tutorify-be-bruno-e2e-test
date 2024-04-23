@@ -20,5 +20,5 @@ body:multipart-form {
 
 assert {
   res.status: eq 413
-  res.responseTime: lte {{high_response_time}}
+  res.responseTime: lte {{upload_file_response_time}}
 }
