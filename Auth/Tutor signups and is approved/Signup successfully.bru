@@ -26,6 +26,7 @@ assert {
   res.body.email: eq {{tutor_email}}
   res.body.username: eq {{tutor_username}}
   res.body.role: eq TUTOR
+  res.body.isApproved: eq false
 }
 
 script:post-response {

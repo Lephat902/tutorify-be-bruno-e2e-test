@@ -1,0 +1,17 @@
+meta {
+  name: Verify Admin cannot reject tutor
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/tutors/{{created_user_id}}/reject
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 400
+  res.responseTime: lte {{medium_response_time}}
+  res.body: contains "Tutor {{created_user_id}} already approved"
+}

@@ -1,0 +1,34 @@
+meta {
+  name: Signup successfully
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/tutors/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{tutor_email}}",
+    "password": "{{tutor_password}}",
+    "username": "{{tutor_username}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.responseTime: lte {{tutor_signup_response_time}}
+  res.body.id: isString
+  res.body: isJson
+  res.body.email: eq {{tutor_email}}
+  res.body.username: eq {{tutor_username}}
+  res.body.role: eq TUTOR
+  res.body.isApproved: eq false
+}
+
+script:post-response {
+  bru.setVar('created_user_id', res.body.id);
+}

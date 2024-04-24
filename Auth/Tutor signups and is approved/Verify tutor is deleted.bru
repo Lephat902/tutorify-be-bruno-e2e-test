@@ -1,7 +1,7 @@
 meta {
-  name: Verify tutor is created
+  name: Verify tutor is deleted
   type: graphql
-  seq: 2
+  seq: 8
 }
 
 post {
@@ -14,8 +14,6 @@ body:graphql {
   query Query($tutorId: String!) {
     tutor(id: $tutorId) {
       id
-      username
-      email
     }
   }
 }
@@ -27,8 +25,6 @@ body:graphql:vars {
 }
 
 assert {
+  res.body.data.tutor: isNull {{user_id_to_block}}
   res.status: eq 200
-  res.body.data.tutor.id: eq {{created_user_id}}
-  res.body.data.tutor.email: eq {{tutor_email}}
-  res.body.data.tutor.username: eq {{tutor_username}}
 }

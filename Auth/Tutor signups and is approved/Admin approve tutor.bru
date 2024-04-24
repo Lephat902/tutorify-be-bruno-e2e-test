@@ -1,0 +1,16 @@
+meta {
+  name: Admin approve tutor
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/tutors/{{created_user_id}}/approve
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}

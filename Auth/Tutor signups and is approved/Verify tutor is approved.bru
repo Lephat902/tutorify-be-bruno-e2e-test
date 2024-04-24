@@ -1,0 +1,32 @@
+meta {
+  name: Verify tutor is approved
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query Query($tutorId: String!) {
+    tutor(id: $tutorId) {
+      id
+      isApproved
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{created_user_id}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.tutor.isApproved: eq true
+  res.body.data.tutor.id: eq {{created_user_id}}
+}

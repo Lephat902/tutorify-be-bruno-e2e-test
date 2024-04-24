@@ -1,7 +1,7 @@
 meta {
   name: Verify tutor is deleted
   type: graphql
-  seq: 6
+  seq: 5
 }
 
 post {
@@ -25,6 +25,6 @@ body:graphql:vars {
 }
 
 assert {
-  res.body.data.tutor: isNull {{user_id_to_block}}
   res.status: eq 200
+  res.body.data.tutor: isNull false
 }
