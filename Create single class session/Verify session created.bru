@@ -1,7 +1,7 @@
 meta {
   name: Verify session created
   type: graphql
-  seq: 9
+  seq: 10
 }
 
 post {
@@ -18,6 +18,9 @@ body:graphql {
         class {
           classId
         }
+        wardId
+        isOnline
+        address
       }
       totalCount
     }
@@ -39,8 +42,16 @@ assert {
 }
 
 script:post-response {
-  if (res.body.data.classSessions.results?.[0]?.id) {
-    bru.setVar('created_class_session_id', res.body.data.classSessions.results[0].id);
+  const sessions = res.body.data.classSessions.results;
+  const defaulAddress = bru.getVar('class_default_address');
+  
+  // In the sample class, isOnline is true
+  // We do it lazily instead of deep comparison
+  if (
+    sessions?.[0]?.id &&
+    sessions[0].isOnline === defaulAddress.isOnline
+  ) {
+    bru.setVar('created_class_session_id', sessions[0].id);
   } else {
     // Loop until id is returned
     bru.setNextRequest("Verify session created");
@@ -57,5 +68,17 @@ tests {
   test("should create expected number of sessions", () => {
     const lastestSessionsCount = res.body.data.classSessions.totalCount;
     expect(bru.getVar('sessions_total_count') + 1).to.equal(lastestSessionsCount);
-  })
+  });
+  
+  test("should create session with default address of class", () => {
+    const classDefaultAddress = bru.getVar('class_default_address');
+    for (const session of res.body.data.classSessions.results) {
+      const { address, wardId, isOnline } = session;
+      expect({
+        address,
+        wardId,
+        isOnline,
+      }).to.deep.equal(classDefaultAddress);
+    }
+  });
 }

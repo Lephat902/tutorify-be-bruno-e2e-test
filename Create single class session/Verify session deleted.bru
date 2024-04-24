@@ -1,7 +1,7 @@
 meta {
   name: Verify session deleted
   type: graphql
-  seq: 11
+  seq: 12
 }
 
 post {
@@ -26,7 +26,7 @@ body:graphql:vars {
 }
 
 assert {
-  res.body.data.classSession: isNull 
+  res.body.data.classSession: isNull
 }
 
 script:post-response {
