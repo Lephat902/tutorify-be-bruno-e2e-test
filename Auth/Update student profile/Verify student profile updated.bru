@@ -1,0 +1,36 @@
+meta {
+  name: Verify student profile updated
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query Query {
+    myProfile {
+      ... on Student {
+        address
+        gender
+        avatar {
+          id
+        }
+        interestedClassCategories {
+          id
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.body.data.myProfile.address: eq 123 Main St
+  res.status: eq 200
+  res.body.data.myProfile.gender: eq FEMALE
+  res.body.data.myProfile.avatar.id: eq "123"
+  res.body.data.myProfile.interestedClassCategories: length 2
+}
