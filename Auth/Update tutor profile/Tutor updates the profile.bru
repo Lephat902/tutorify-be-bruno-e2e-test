@@ -1,0 +1,45 @@
+meta {
+  name: Tutor updates the profile
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/tutors/profile
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "password": "newpassword",
+    "oldPassword": "{{sample_tutor_password}}",
+    "address": "123 Main St",
+    "gender": "FEMALE",
+    "avatar": {
+      "id": "123",
+      "url": "https://www.youtube.com/watch?v=CSvFpBOe8eY",
+      "title": "Chop suey",
+      "size": 123456
+    },
+    "proficienciesIds": [ "3b5e5abb-f7ca-4503-bf8d-8e02dbc249e2", "83bdcea4-c6bf-4e7a-a9e0-d0894f5841bb" ],
+    "portfolios": [{
+      "id": "123",
+      "url": "https://www.youtube.com/watch?v=CSvFpBOe8eY",
+      "title": "Chop suey",
+      "size": 123456
+    }],
+    "socialProfiles": [ { "name": "facebook",
+      "url": "https://www.facebook.com/groups/elonmusk1"}
+     
+    ]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{update_profile_response_time}}
+  res.body.address: eq 123 Main St
+  res.body.gender: eq FEMALE
+  res.body.avatar.id: eq "123"
+}
