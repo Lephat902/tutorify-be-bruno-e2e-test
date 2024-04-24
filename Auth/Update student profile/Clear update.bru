@@ -15,12 +15,15 @@ body:json {
     "address": null,
     "gender": null,
     "password": "test123@",
-    "oldPassword": "newpassword"
+    "oldPassword": "newpassword",
+    "interestedClassCategoriesId": null,
+    "avatar": null
   }
 }
 
 assert {
   res.status: eq 200
-  res.body.address: isNull 
+  res.body.address: isNull
   res.body.gender: isNull
+  res.body.avatar: isNull 
 }

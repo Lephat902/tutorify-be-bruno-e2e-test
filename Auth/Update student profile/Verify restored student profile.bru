@@ -1,7 +1,7 @@
 meta {
-  name: Fetch current student profile
+  name: Verify restored student profile
   type: graphql
-  seq: 2
+  seq: 6
 }
 
 post {
@@ -31,6 +31,6 @@ assert {
   res.body.data.myProfile.address: isNull
   res.status: eq 200
   res.body.data.myProfile.gender: isNull
-  res.body.data.myProfile.avatar: isNull 
+  res.body.data.myProfile.avatar: isNull
   res.body.data.myProfile.interestedClassCategories: length 0
 }
