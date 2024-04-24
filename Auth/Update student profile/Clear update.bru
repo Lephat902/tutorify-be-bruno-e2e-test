@@ -1,0 +1,26 @@
+meta {
+  name: Clear update
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/students/profile
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "address": null,
+    "gender": null,
+    "password": "test123@",
+    "oldPassword": "newpassword"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.address: isNull 
+  res.body.gender: isNull
+}

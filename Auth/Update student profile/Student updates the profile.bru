@@ -1,0 +1,27 @@
+meta {
+  name: Student updates the profile
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/students/profile
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "password": "newpassword",
+    "oldPassword": "test123@",
+    "address": "123 Main St",
+    "gender": "FEMALE"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{update_profile_response_time}}
+  res.body.address: eq 123 Main St
+  res.body.gender: eq FEMALE
+}

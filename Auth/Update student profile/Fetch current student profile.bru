@@ -1,0 +1,28 @@
+meta {
+  name: Fetch current student profile
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query Query {
+    myProfile {
+      ... on Student {
+        address
+        gender
+      }
+    }
+  }
+}
+
+assert {
+  res.body.data.myProfile.address: isNull
+  res.status: eq 200
+  res.body.data.myProfile.gender: isNull 
+}
