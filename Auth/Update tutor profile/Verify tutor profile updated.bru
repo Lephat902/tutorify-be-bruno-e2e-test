@@ -38,7 +38,7 @@ assert {
   res.status: eq 200
   res.body.data.myProfile.gender: eq FEMALE
   res.body.data.myProfile.avatar.id: eq "123"
-  res.body.data.myProfile.proficiencies: length 0
-  res.body.data.myProfile.socialProfiles[0].id: isString 
+  res.body.data.myProfile.proficiencies: length 2
+  res.body.data.myProfile.socialProfiles[0].id: isString
   res.body.data.myProfile.tutorPortfolios[0].id: eq "123"
 }
