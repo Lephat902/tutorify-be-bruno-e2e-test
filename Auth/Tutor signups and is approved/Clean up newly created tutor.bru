@@ -7,11 +7,7 @@ meta {
 delete {
   url: {{base_url}}/users/{{created_user_id}}
   body: none
-  auth: bearer
-}
-
-auth:bearer {
-  token: {{access_token}}
+  auth: inherit
 }
 
 assert {

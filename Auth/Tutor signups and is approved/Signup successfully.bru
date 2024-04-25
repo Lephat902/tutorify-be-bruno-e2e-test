@@ -12,9 +12,9 @@ post {
 
 body:json {
   {
-    "email": "{{tutor_email}}",
-    "password": "{{tutor_password}}",
-    "username": "{{tutor_username}}"
+    "email": "{{random_tutor_email}}",
+    "password": "{{random_tutor_username}}",
+    "username": "{{random_tutor_password}}"
   }
 }
 
@@ -23,10 +23,19 @@ assert {
   res.responseTime: lte {{tutor_signup_response_time}}
   res.body.id: isString
   res.body: isJson
-  res.body.email: eq {{tutor_email}}
-  res.body.username: eq {{tutor_username}}
+  res.body.email: eq {{random_tutor_email}}
+  res.body.username: eq {{random_tutor_username}}
   res.body.role: eq TUTOR
   res.body.isApproved: eq false
+}
+
+script:pre-request {
+  const shortLen = 7;
+  const randomStr = utils.generateRandomString(shortLen);
+  const randomEmail = `test${randomStr}@test.com`;
+  bru.setVar('random_tutor_email', randomEmail);
+  bru.setVar('random_tutor_username', randomStr);
+  bru.setVar('random_tutor_password', randomStr);
 }
 
 script:post-response {
