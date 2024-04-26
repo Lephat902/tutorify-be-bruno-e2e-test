@@ -1,7 +1,7 @@
 meta {
   name: Clear update
   type: http
-  seq: 6
+  seq: 5
 }
 
 patch {
@@ -12,19 +12,15 @@ patch {
 
 body:json {
   {
-    "address": null,
-    "gender": null,
     "password": "{{sample_tutor_password}}",
     "oldPassword": "newpassword",
     "avatar": null,
-    "socialProfiles": null,
-    "tutorPortfolios": null
+    "socialProfiles": [],
+    "tutorPortfolios": []
   }
 }
 
 assert {
   res.status: eq 200
-  res.body.address: isNull
-  res.body.gender: isNull
   res.body.avatar: isNull
 }

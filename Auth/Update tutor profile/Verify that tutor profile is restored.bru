@@ -1,7 +1,7 @@
 meta {
-  name: Fetch current tutor profile
+  name: Verify that tutor profile is restored
   type: graphql
-  seq: 2
+  seq: 6
 }
 
 post {
@@ -34,11 +34,8 @@ body:graphql {
 }
 
 assert {
-  res.body.data.myProfile.address: isNull
   res.status: eq 200
-  res.body.data.myProfile.gender: isNull
   res.body.data.myProfile.avatar: isNull
-  res.body.data.myProfile.proficiencies: length 0
-  res.body.data.myProfile.socialProfiles: isNull 0
+  res.body.data.myProfile.socialProfiles: length 0
   res.body.data.myProfile.tutorPortfolios: length 0
 }

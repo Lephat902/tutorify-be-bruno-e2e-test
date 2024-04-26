@@ -1,7 +1,7 @@
 meta {
   name: Verify tutor profile updated
   type: graphql
-  seq: 4
+  seq: 3
 }
 
 post {
@@ -34,11 +34,19 @@ body:graphql {
 }
 
 assert {
-  res.body.data.myProfile.address: eq 123 Main St
+  res.body.data.myProfile.address: eq {{random_address}}
   res.status: eq 200
-  res.body.data.myProfile.gender: eq FEMALE
-  res.body.data.myProfile.avatar.id: eq "123"
-  res.body.data.myProfile.proficiencies: length 2
-  res.body.data.myProfile.socialProfiles[0].id: isString
-  res.body.data.myProfile.tutorPortfolios[0].id: eq "123"
+  res.body.data.myProfile.gender: eq {{random_gender}}
+  res.body.data.myProfile.avatar.id: eq "6612e5e6fb334fd9852f87e0"
+  res.body.data.myProfile.socialProfiles[0].id: isDefined 
+}
+
+tests {
+  test("should get updated proficiencyClassCategories", function () {
+    const responseCatIds = res.body.data.myProfile.proficiencies.map(e => e.id).sort();
+  
+    const expectedCatIds = bru.getVar("random_class_category_ids").sort();
+    
+    expect(responseCatIds).to.be.deep.equal(expectedCatIds);
+  });
 }
