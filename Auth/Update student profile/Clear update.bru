@@ -12,18 +12,13 @@ patch {
 
 body:json {
   {
-    "address": null,
-    "gender": null,
     "password": "{{sample_student_password}}",
     "oldPassword": "newpassword",
-    "interestedClassCategoriesId": null,
     "avatar": null
   }
 }
 
 assert {
   res.status: eq 200
-  res.body.address: isNull
-  res.body.gender: isNull
   res.body.avatar: isNull
 }

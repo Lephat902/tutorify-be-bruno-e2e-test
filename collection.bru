@@ -9,6 +9,10 @@ auth:bearer {
 script:pre-request {
   const storedWeekdaysStrings = bru.getEnvVar("weekdays_strings_arr");
   const weekdayStrings = JSON.parse(storedWeekdaysStrings.replace(/'/g, '"'));
+  const genders = ["MALE", "FEMALE", "OTHER"];
+  const categoryIds = ["01611b30-2a6b-4efd-a4b8-d6054a50abd0", "0e7993b6-76a4-40d2-ab7f-524db9e4bdd9", "1681dead-9f4a-48f1-841c-5a38608bd0f9",
+  "1a7b8534-cbce-41f2-894c-a48fcf701607"];
+
   // Utility methods
   const utils = {
       weekdayStrings,
@@ -63,5 +67,11 @@ script:pre-request {
       getNRandomWeekdays: (n) => {
           return utils.getNRandomItems(utils.weekdayStrings, n);
       },
+      getRandomCategoryIds: () => {
+        return utils.getNRandomItems(categoryIds, 2)
+      },
+      getRandomGender: () => {
+        return utils.getNRandomItems(genders, 1)[0];
+      }
   };
 }

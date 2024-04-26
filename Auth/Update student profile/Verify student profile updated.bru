@@ -28,9 +28,18 @@ body:graphql {
 }
 
 assert {
-  res.body.data.myProfile.address: eq 123 Main St
+  res.body.data.myProfile.address: eq {{random_address}}
   res.status: eq 200
-  res.body.data.myProfile.gender: eq FEMALE
+  res.body.data.myProfile.gender: eq {{random_gender}}
   res.body.data.myProfile.avatar.id: eq "123"
-  res.body.data.myProfile.interestedClassCategories: length 2
+}
+
+tests {
+  test("should get updated interestedClassCategories", function () {
+    const responseCatIds = res.body.data.myProfile.interestedClassCategories.map(e => e.id).sort();
+  
+    const expectedCatIds = bru.getVar("random_class_category_ids").sort();
+    
+    expect(responseCatIds).to.be.deep.equal(expectedCatIds);
+  });
 }

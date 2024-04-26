@@ -19,6 +19,7 @@ body:json {
 
 assert {
   res.status: eq 201
+  res.body.user.avatar: isNull 
 }
 
 script:post-response {

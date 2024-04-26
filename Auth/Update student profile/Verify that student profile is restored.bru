@@ -1,5 +1,5 @@
 meta {
-  name: Login by student with old password
+  name: Verify that student profile is restored
   type: http
   seq: 8
 }
@@ -19,6 +19,7 @@ body:json {
 
 assert {
   res.status: eq 201
+  res.body.user.avatar: isNull
 }
 
 script:post-response {
