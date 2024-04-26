@@ -1,0 +1,42 @@
+meta {
+  name: Fetch class address
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($classId: String!) {
+    class(id: $classId) {
+      id
+      wardId
+      address
+      isOnline
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{class_id_to_create_session}}"
+  }
+}
+
+assert {
+  res.body.data.class.id: eq {{class_id_to_create_session}}
+}
+
+script:post-response {
+  const { address, wardId, isOnline } = res.body.data.class;
+  bru.setVar('class_default_address', {
+    address,
+    wardId,
+    isOnline,
+  });
+}
