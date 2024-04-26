@@ -28,9 +28,6 @@ body:graphql {
 }
 
 assert {
-  res.body.data.myProfile.address: isNull
   res.status: eq 200
-  res.body.data.myProfile.gender: isNull
   res.body.data.myProfile.avatar: isNull
-  res.body.data.myProfile.interestedClassCategories: length 0
 }

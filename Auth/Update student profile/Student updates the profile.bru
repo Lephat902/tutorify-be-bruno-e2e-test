@@ -17,10 +17,10 @@ body:json {
     "address": "{{random_address}}",
     "gender": "{{random_gender}}",
     "avatar": {
-      "id": "123",
-      "url": "https://www.youtube.com/watch?v=CSvFpBOe8eY",
-      "title": "Chop suey",
-      "size": 123456
+      "id":"6612e5e6fb334fd9852f87e0",
+      "url":"https://storage.googleapis.com/tutorify-b63bf.appspot.com/c860672d-882e-43fa-9444-958c1950afd0avatar",
+      "title":"avatar",
+      "size":72412
     }
   }
 }
@@ -30,7 +30,7 @@ assert {
   res.responseTime: lte {{update_profile_response_time}}
   res.body.address: eq {{random_address}}
   res.body.gender: eq {{random_gender}}
-  res.body.avatar.id: eq "123"
+  res.body.avatar.id: eq "6612e5e6fb334fd9852f87e0"
 }
 
 script:pre-request {
