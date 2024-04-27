@@ -1,0 +1,36 @@
+meta {
+  name: Get classes with sessions filters before creating
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($sessionsFilter: ClassQueryInput) {
+    classes(sessionsFilter: $sessionsFilter) {
+      totalCount
+      results {
+        id
+        scheduledClassSessionsCount
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "sessionsFilter": {
+      "statuses": ["SCHEDULED"]
+    }
+  }
+}
+
+assert {
+  res.body.data.classes.totalCount: eq 0
+}
