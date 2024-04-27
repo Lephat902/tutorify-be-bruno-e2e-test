@@ -1,0 +1,53 @@
+meta {
+  name: Verify tutor profile updated
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query Query {
+    myProfile {
+      ... on Tutor {
+        address
+        gender
+        avatar {
+          id
+        }
+        proficiencies {
+          id
+        }
+        socialProfiles {
+          id
+        }
+        tutorPortfolios {
+          id
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.body.data.myProfile.address: eq {{random_address}}
+  res.status: eq 200
+  res.body.data.myProfile.gender: eq {{random_gender}}
+  res.body.data.myProfile.avatar.id: eq "6612e5e6fb334fd9852f87e0"
+  res.body.data.myProfile.socialProfiles[0].id: isDefined
+  res.body.data.myProfile.tutorPortfolios[0].id: eq 6612e5e6fb334fd9852f87e0
+}
+
+tests {
+  test("should get updated proficiencyClassCategories", function () {
+    const responseCatIds = res.body.data.myProfile.proficiencies.map(e => e.id).sort();
+  
+    const expectedCatIds = bru.getVar("random_class_category_ids").sort();
+    
+    expect(responseCatIds).to.be.deep.equal(expectedCatIds);
+  });
+}

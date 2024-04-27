@@ -1,0 +1,26 @@
+meta {
+  name: Clear update
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/tutors/profile
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "password": "{{sample_tutor_password}}",
+    "oldPassword": "newpassword",
+    "avatar": null,
+    "socialProfiles": [],
+    "tutorPortfolios": []
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.avatar: isNull
+}

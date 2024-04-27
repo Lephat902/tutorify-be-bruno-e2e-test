@@ -1,0 +1,41 @@
+meta {
+  name: Verify that tutor profile is restored
+  type: graphql
+  seq: 6
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query Query {
+    myProfile {
+      ... on Tutor {
+        address
+        gender
+        avatar {
+          id
+        }
+        proficiencies {
+          id
+        }
+        socialProfiles {
+          id
+        }
+        tutorPortfolios {
+          id
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.myProfile.avatar: isNull
+  res.body.data.myProfile.socialProfiles: length 0
+  res.body.data.myProfile.tutorPortfolios: length 0
+}

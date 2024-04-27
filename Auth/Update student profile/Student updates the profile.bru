@@ -1,0 +1,44 @@
+meta {
+  name: Student updates the profile
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/students/profile
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "password": "newpassword",
+    "oldPassword": "{{sample_student_password}}",
+    "address": "{{random_address}}",
+    "gender": "{{random_gender}}",
+    "avatar": {
+      "id":"6612e5e6fb334fd9852f87e0",
+      "url":"https://storage.googleapis.com/tutorify-b63bf.appspot.com/c860672d-882e-43fa-9444-958c1950afd0avatar",
+      "title":"avatar",
+      "size":72412
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{update_profile_response_time}}
+  res.body.address: eq {{random_address}}
+  res.body.gender: eq {{random_gender}}
+  res.body.avatar.id: eq "6612e5e6fb334fd9852f87e0"
+}
+
+script:pre-request {
+  bru.setVar("random_address", utils.generateRandomString(7));
+  
+  bru.setVar("random_gender", utils.getRandomGender());
+  
+  bru.setVar("random_class_category_ids", utils.getRandomCategoryIds());
+  
+  req.body.interestedClassCategoryIds = bru.getVar("random_class_category_ids")
+}

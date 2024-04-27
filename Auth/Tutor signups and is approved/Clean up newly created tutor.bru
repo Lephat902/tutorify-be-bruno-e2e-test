@@ -1,0 +1,16 @@
+meta {
+  name: Clean up newly created tutor
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{base_url}}/users/{{created_user_id}}
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.status: eq 200
+  res.body: isTruthy
+}

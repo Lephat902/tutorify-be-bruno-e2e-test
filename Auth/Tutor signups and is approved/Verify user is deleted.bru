@@ -1,0 +1,31 @@
+meta {
+  name: Verify user is deleted
+  type: graphql
+  seq: 7
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query Query($userId: String!) {
+    user(id: $userId) {
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "userId": "{{created_user_id}}"
+  }
+}
+
+assert {
+  res.body.data: isNull {{user_id_to_block}}
+  res.body.errors: isDefined 200
+  res.body.errors[0].message: contains 404
+}

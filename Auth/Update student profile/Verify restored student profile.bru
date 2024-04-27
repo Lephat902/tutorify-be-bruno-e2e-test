@@ -1,0 +1,33 @@
+meta {
+  name: Verify restored student profile
+  type: graphql
+  seq: 7
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query Query {
+    myProfile {
+      ... on Student {
+        address
+        gender
+        avatar {
+          id
+        }
+        interestedClassCategories {
+          id
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.myProfile.avatar: isNull
+}

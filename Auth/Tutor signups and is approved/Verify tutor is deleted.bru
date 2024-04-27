@@ -1,0 +1,30 @@
+meta {
+  name: Verify tutor is deleted
+  type: graphql
+  seq: 8
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query Query($tutorId: String!) {
+    tutor(id: $tutorId) {
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "tutorId": "{{created_user_id}}"
+  }
+}
+
+assert {
+  res.body.data.tutor: isNull {{user_id_to_block}}
+  res.status: eq 200
+}
