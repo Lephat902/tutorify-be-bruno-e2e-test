@@ -12,7 +12,7 @@ post {
 
 assert {
   res.status: eq 400
-  res.body: length 10
+  res.body: length 11
   res.body: contains classCategoryIds should not be empty
   res.body: contains isOnline should not be empty
   res.body: contains studentQty should not be empty
