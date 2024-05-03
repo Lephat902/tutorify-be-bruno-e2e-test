@@ -1,0 +1,72 @@
+meta {
+  name: Get ward by slug
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($slug: String) {
+    ward(slug: $slug) {
+      id
+      slug
+      name
+      nameEn
+      fullName
+      fullNameEn
+      district {
+        id
+        slug
+        name
+        nameEn
+        fullName
+        fullNameEn
+        province {
+          id
+          slug
+          name
+          nameEn
+          fullName
+          fullNameEn
+        }
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "slug": "{{ward_slug}}"
+  }
+}
+
+vars:pre-request {
+  ward_slug: dong_hai_1_
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
+
+tests {
+  const ward = res.body.data.ward;
+  
+  test("should get ward with correct slug", () => {
+    expect(ward).to.have.property('slug', bru.getVar("ward_slug"));
+  });
+  
+  
+  test("should not have any null fields", () => {
+    for (let attribute in ward) {
+      expect(ward[attribute], `Checking attribute ${attribute}`).to.exist;
+    }
+  });
+  
+}

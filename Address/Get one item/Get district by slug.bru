@@ -1,0 +1,64 @@
+meta {
+  name: Get district by slug
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($slug: String) {
+    district(slug: $slug) {
+      id
+      slug
+      name
+      nameEn
+      fullName
+      fullNameEn
+      province {
+        id
+        slug
+        name
+        nameEn
+        fullName
+        fullNameEn
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "slug": "{{district_slug}}"
+  }
+}
+
+vars:pre-request {
+  district_slug: binh_thanh
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
+
+tests {
+  const district = res.body.data.district;
+  
+  test("should get district with correct slug", async () => {
+    expect(district).to.have.property('slug', bru.getVar("district_slug"));
+  });
+  
+  
+  test("should not have any null fields", async () => {
+    for (let attribute in district) {
+      expect(district[attribute], `Checking attribute ${attribute}`).to.exist;
+    }
+  });
+  
+}

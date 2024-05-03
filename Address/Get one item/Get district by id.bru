@@ -1,0 +1,64 @@
+meta {
+  name: Get district by id
+  type: graphql
+  seq: 5
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($districtId: String) {
+    district(id: $districtId) {
+      id
+      slug
+      name
+      nameEn
+      fullName
+      fullNameEn
+      province {
+        id
+        slug
+        name
+        nameEn
+        fullName
+        fullNameEn
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "districtId": "{{district_id}}"
+  }
+}
+
+vars:pre-request {
+  district_id: "799"
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
+
+tests {
+  const district = res.body.data.district;
+  
+  test("should get district with correct slug", async () => {
+    expect(district.id).to.equal(bru.getVar("district_id"));
+  });
+  
+  
+  test("should not have any null fields", async () => {
+    for (let attribute in district) {
+      expect(district[attribute], `Checking attribute ${attribute}`).to.exist;
+    }
+  });
+  
+}

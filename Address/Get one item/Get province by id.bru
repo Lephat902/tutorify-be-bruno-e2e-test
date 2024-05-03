@@ -1,0 +1,55 @@
+meta {
+  name: Get province by id
+  type: graphql
+  seq: 1
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query ExampleQuery($provinceId: String) {
+    province(id: $provinceId) {
+      id
+      slug
+      name
+      nameEn
+      fullName
+      fullNameEn
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "provinceId": "{{province_id}}"
+  }
+}
+
+vars:pre-request {
+  province_id: "01"
+}
+
+assert {
+  res.status: eq 200
+  res.responseTime: lte {{medium_response_time}}
+}
+
+tests {
+  const province = res.body.data.province;
+  
+  test("should get province with correct id", async () => {
+    expect(province).to.have.property('id', '01');
+  });
+  
+  
+  test("should not have any null fields", async () => {
+    for (let attribute in province) {
+      expect(province[attribute], `Checking attribute ${attribute}`).to.exist;
+    }
+  });
+  
+}
