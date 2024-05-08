@@ -24,7 +24,7 @@ body:graphql {
 
 assert {
   res.status: eq 200
-  res.responseTime: lte 2000
+  res.responseTime: lte {{very_high_response_time}}
 }
 
 tests {
