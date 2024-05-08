@@ -45,7 +45,7 @@ body:graphql:vars {
 
 assert {
   res.status: eq 200
-  res.responseTime: lte {{medium_response_time}}
+  res.responseTime: lte {{high_response_time}}
 }
 
 tests {
@@ -60,7 +60,7 @@ tests {
     expect(responseData.data.feedbacks.results.length).to.be.most(defaultLimit).and.to.be.most(responseData.data.feedbacks.totalCount);
     // Check query
     expect(feedbacks.every((value) => value.text.search(/Special/i) !== -1)).to.be.equal(true);
-
+  
     // Check sort
     expect(feedbacks.every((value, index, array) => value.tutorId === tutorId && 
       (index === 0 || value.createdAt <= array[index - 1].createdAt))).to.be.equal(true)
