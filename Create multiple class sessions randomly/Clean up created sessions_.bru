@@ -1,5 +1,5 @@
 meta {
-  name: Clean up created sessions
+  name: Clean up created sessions_
   type: http
   seq: 7
 }
@@ -27,6 +27,6 @@ script:post-response {
   const createdSessionsIds = bru.getVar('created_sessions_ids');
   
   if (createdSessionsIds.length) {
-    bru.setNextRequest("Clean up created sessions");
+    bru.setNextRequest("Clean up created sessions_");
   }
 }
