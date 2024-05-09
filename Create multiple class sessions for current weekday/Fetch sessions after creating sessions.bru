@@ -34,7 +34,7 @@ assert {
 
 script:post-response {
   const sessionsCountToWait = bru.getVar('sessions_total_count') + bru.getVar('num_of_sessions_to_create');
-  if (res.body.data.classSessions.results.length === sessionsCountToWait) {
+  if (res.body.data.classSessions.results.length >= sessionsCountToWait) {
     const createdSessionsIds = [];
     for (const session of res.body.data.classSessions.results) {
       createdSessionsIds.push(session.id);
