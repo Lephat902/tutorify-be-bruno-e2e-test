@@ -29,3 +29,9 @@ assert {
   res.body.errors: isDefined 200
   res.body.errors[0].message: contains 404
 }
+
+script:post-response {
+  if (res.body.data !== null) {
+    bru.setNextRequest("Verify user is deleted");
+  }
+}
