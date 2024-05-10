@@ -1,0 +1,37 @@
+meta {
+  name: Verify user is deleted_2
+  type: graphql
+  seq: 7
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query Query($userId: String!) {
+    user(id: $userId) {
+      id
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "userId": "{{created_user_id}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  const isNeededToRetry = res.status == 200 && (!res.body.errors || res.body.errors[0].message.search("404") == -1 || res.body.data);
+  
+  if (isNeededToRetry) {
+    bru.setNextRequest('Verify user is deleted_2');
+  }
+}
