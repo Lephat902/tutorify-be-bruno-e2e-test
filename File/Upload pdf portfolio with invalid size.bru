@@ -19,6 +19,7 @@ body:multipart-form {
 }
 
 assert {
-  res.status: eq 413
+  res.status: eq 400
   res.responseTime: lte {{upload_file_response_time}}
+  res.body: contains Maximum file size is 20MB
 }
