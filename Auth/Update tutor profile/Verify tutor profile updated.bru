@@ -42,6 +42,18 @@ assert {
   res.body.data.myProfile.tutorPortfolios[0].id: eq 6612e5e6fb334fd9852f87e0
 }
 
+script:post-response {
+  const _ = require('lodash');
+  
+  const responseCatIds = res.body.data.myProfile.proficiencies.map(e => e.id).sort();
+  
+  const expectedCatIds = bru.getVar("random_class_category_ids").sort();
+  
+  if (!_.isEqual(responseCatIds, expectedCatIds)) {
+    bru.setNextRequest("Verify tutor profile updated");
+  }
+}
+
 tests {
   test("should get updated proficiencyClassCategories", function () {
     const responseCatIds = res.body.data.myProfile.proficiencies.map(e => e.id).sort();
