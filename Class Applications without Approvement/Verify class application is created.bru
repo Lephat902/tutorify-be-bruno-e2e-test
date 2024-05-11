@@ -7,7 +7,7 @@ meta {
 post {
   url: {{graphql_base_url}}
   body: graphql
-  auth: none
+  auth: inherit
 }
 
 body:graphql {
@@ -38,5 +38,9 @@ assert {
 }
 
 script:post-response {
-  bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
+  if (res.body.data) {
+    bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
+  } else {
+    bru.setNextRequest("Verify class application is created");
+  }
 }
