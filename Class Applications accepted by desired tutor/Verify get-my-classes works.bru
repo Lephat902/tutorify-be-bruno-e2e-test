@@ -39,3 +39,9 @@ assert {
   res.body.data.classes.results[0].tutorId: eq {{sample_tutor_id}}
   res.body.data.classes.results: length 1
 }
+
+script:post-response {
+  if (res.body.data.classes.results[0]?.status !== 'ASSIGNED') {
+    bru.setNextRequest("Verify get-my-classes work");
+  }
+}

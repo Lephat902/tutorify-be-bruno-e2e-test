@@ -1,5 +1,5 @@
 meta {
-  name: Verify get-my-classes works
+  name: Verify get-my-classes works_
   type: graphql
   seq: 10
 }
@@ -38,4 +38,10 @@ assert {
   res.body.data.classes.results[0].status: eq ASSIGNED
   res.body.data.classes.results[0].tutorId: eq {{sample_tutor_id_1}}
   res.body.data.classes.results: length 1
+}
+
+script:post-response {
+  if (res.body.data.classes.results[0]?.status !== 'ASSIGNED') {
+    bru.setNextRequest("Verify get-my-classes works_");
+  }
 }
