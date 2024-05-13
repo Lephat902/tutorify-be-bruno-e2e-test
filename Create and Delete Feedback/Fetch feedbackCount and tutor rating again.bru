@@ -32,3 +32,9 @@ assert {
   res.body.data.tutor.feedbackCount - 1: eq {{feedbackCount}}
   res.body.data.tutor.totalFeedbackRating - 4: eq {{totalFeedbackRating}}
 }
+
+script:post-response {
+  if (res.body.data.tutor.feedbackCount - 1 !== bru.getVar('feedbackCount')) {
+    bru.setNextRequest("Fetch feedbackCount and tutor rating again");
+  }
+}

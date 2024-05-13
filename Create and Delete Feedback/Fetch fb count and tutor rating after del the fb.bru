@@ -31,3 +31,9 @@ assert {
   res.status: eq 200
   res.body.data.tutor.totalFeedbackRating: eq {{totalFeedbackRating}}
 }
+
+script:post-response {
+  if (res.body.data.tutor.feedbackCount !== bru.getVar('feedbackCount')) {
+    bru.setNextRequest("Fetch fb count and tutor rating after del the fb");
+  }
+}
