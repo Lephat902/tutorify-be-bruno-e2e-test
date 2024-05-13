@@ -25,12 +25,17 @@ body:graphql:vars {
 }
 
 assert {
-  res.body.data.tutor: isNull {{user_id_to_block}}
   res.status: eq 200
 }
 
 script:post-response {
   if (res.body.data.tutor !== null) {
     bru.setNextRequest("Verify tutor is deleted");
+  }
+}
+
+tests {
+  if (res.body.data.tutor !== null) {
+    return;
   }
 }

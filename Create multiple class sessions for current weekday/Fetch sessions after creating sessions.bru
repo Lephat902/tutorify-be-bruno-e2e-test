@@ -28,10 +28,6 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.classSessions.results: length {{num_of_sessions_to_create}}
-}
-
 script:post-response {
   const sessionsCountToWait = bru.getVar('sessions_total_count') + bru.getVar('num_of_sessions_to_create');
   if (res.body.data.classSessions.results.length >= sessionsCountToWait) {

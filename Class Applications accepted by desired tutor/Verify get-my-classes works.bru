@@ -33,15 +33,33 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.classes.results[0].id: eq {{created_class_id}}
-  res.body.data.classes.results[0].status: eq ASSIGNED
-  res.body.data.classes.results[0].tutorId: eq {{sample_tutor_id}}
-  res.body.data.classes.results: length 1
-}
-
 script:post-response {
-  if (res.body.data.classes.results[0]?.status !== 'ASSIGNED') {
+  const classes = res.body.data.classes.results;
+  const onlyClass = classes[0];
+  
+  if (onlyClass?.status !== 'ASSIGNED') {
     bru.setNextRequest("Verify get-my-classes work");
   }
+}
+
+tests {
+  const classes = res.body.data.classes.results;
+  const onlyClass = classes[0];
+  
+  if (onlyClass?.status !== 'ASSIGNED') {
+    return;
+  }
+  
+  test(`Should return recently created class`, () => {
+    expect(onlyClass.id).to.equal(bru.getVar('created_class_id'));
+  });
+  test(`Should return correct class status`, () => {
+    expect(onlyClass.status).to.equal('ASSIGNED');
+  });
+  test(`Should return correct tutor for class`, () => {
+    expect(onlyClass.tutorId).to.equal(bru.getEnvVar('sample_tutor_id'));
+  });
+  test(`Should return exact 1 item`, () => {
+    expect(classes.length).to.equal(1);
+  });
 }

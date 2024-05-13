@@ -24,14 +24,24 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data: isNull {{user_id_to_block}}
-  res.body.errors: isDefined 200
-  res.body.errors[0].message: contains 404
-}
-
 script:post-response {
   if (res.body.data !== null) {
     bru.setNextRequest("Verify user is deleted");
   }
+}
+
+tests {
+  if (res.body.data !== null) {
+    return;
+  }
+  
+  test(`Should return null`, () => {
+    expect(res.body.data).to.be.null;
+  });
+  test(`Should return errors fields`, () => {
+    expect(res.body.errors).to.not.be.undefined;
+  });
+  test(`Should return 404 value`, () => {
+    expect(res.body.errors[0].message).to.include('404');
+  });
 }
