@@ -29,7 +29,7 @@ assert {
 }
 
 script:post-response {
-  const isNeededtoRetry = res.status == 200 && (res.body.data != null|| !res.body.errors || res.body.errors[0].message.search("404") == -1);
+  const isNeededtoRetry = res.status == 200 && (res.body.data || !res.body.errors || res.body.errors[0].message.search("404") == -1);
   
   if (isNeededtoRetry) {
     bru.setNextRequest('Verify user is deleted_1');

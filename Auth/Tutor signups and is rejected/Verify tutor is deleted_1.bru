@@ -29,7 +29,7 @@ assert {
 }
 
 script:post-response {
-  const isNeededtoRetry = res.status == 200 && res.body.data.tutor != null;
+  const isNeededtoRetry = res.status == 200 && res.body.data.tutor;
   
   if (isNeededtoRetry) {
     bru.setNextRequest('Verify tutor is deleted_1');
