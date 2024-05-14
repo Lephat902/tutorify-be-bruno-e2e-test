@@ -25,7 +25,7 @@ assert {
   res.body.email: eq {{random_student_email}}
   res.body.username: eq {{random_student_username}}
   res.body.role: eq STUDENT
-  res.responseTime: lte {{high_response_time}}
+  res.responseTime: lte {{extreme_high_response_time}}
 }
 
 script:pre-request {

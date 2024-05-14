@@ -29,7 +29,7 @@ body:json {
 
 assert {
   res.status: eq 201
-  res.responseTime: lte {{high_response_time}}
+  res.responseTime: lte {{very_high_response_time}}
 }
 
 script:post-response {

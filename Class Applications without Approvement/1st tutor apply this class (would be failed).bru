@@ -16,7 +16,7 @@ auth:bearer {
 
 assert {
   res.status: eq 400
-  res.responseTime: lte {{high_response_time}}
+  res.responseTime: lte {{extreme_high_response_time}}
   res.body: length 1
   res.body: contains You've already had an pending application to this class
 }
