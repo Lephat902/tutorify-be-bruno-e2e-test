@@ -38,9 +38,5 @@ assert {
 }
 
 script:post-response {
-  if (res.body.data) {
-    bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
-  } else {
-    bru.setNextRequest("Verify class application is created");
-  }
+  bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
 }

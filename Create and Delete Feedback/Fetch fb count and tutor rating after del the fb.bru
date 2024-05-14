@@ -26,8 +26,27 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.tutor.feedbackCount: eq {{feedbackCount}}
-  res.status: eq 200
-  res.body.data.tutor.totalFeedbackRating: eq {{totalFeedbackRating}}
+script:post-response {
+  if (res.body.data.tutor.feedbackCount !== bru.getVar('feedbackCount')) {
+    bru.setNextRequest("Fetch fb count and tutor rating after del the fb");
+  }
+}
+
+tests {
+  if (res.body.data.tutor.feedbackCount !== bru.getVar('feedbackCount')) {
+    return;
+  }
+  
+  test(`Should return corrrect status`, () => {
+    expect(res.status).to.equal(200);
+  });
+  test(`Should be faster than LRT`, () => {
+    expect(res.responseTime).to.be.below(Number(bru.getEnvVar('low_response_time')));
+  });
+  test(`Should return correct feedbackCount`, () => {
+    expect(res.body.data.tutor.feedbackCount).to.equal(bru.getVar('feedbackCount'));
+  });
+  test(`Should return correct totalFeedbackRating`, () => {
+    expect(res.body.data.tutor.totalFeedbackRating).to.equal(bru.getVar('totalFeedbackRating'));
+  });
 }

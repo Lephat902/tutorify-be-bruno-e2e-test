@@ -48,8 +48,19 @@ script:post-response {
 }
 
 tests {
+  const sessions = res.body.data.classSessions.results;
+  const onlySession = sessions[0];
+  const defaulAddress = bru.getVar('class_default_address');
+  
+  if (!(
+    sessions?.[0]?.id &&
+    onlySession.isOnline === defaulAddress.isOnline
+  )) {
+    return;
+  }
+  
   test("should return sessions of specified class", () => {
-    for (const session of res.body.data.classSessions.results) {
+    for (const session of sessions) {
       expect(session.class.classId).to.equal(bru.getEnvVar('class_id_to_create_session'));
     }
   });

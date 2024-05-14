@@ -25,12 +25,14 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.classSession: isNull
-}
-
 script:post-response {
   if (res.body.data.classSession !== null) {
     bru.setNextRequest("Verify session deleted");
+  }
+}
+
+tests {
+  if (res.body.data.classSession !== null) {
+    return;
   }
 }

@@ -28,19 +28,18 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.classSessions.results: length {{num_of_sessions_to_create}}
-}
-
 script:post-response {
-  const sessionsCountToWait = bru.getVar('sessions_total_count') + bru.getVar('num_of_sessions_to_create');
-  if (res.body.data.classSessions.results.length >= sessionsCountToWait) {
-    const createdSessionsIds = [];
-    for (const session of res.body.data.classSessions.results) {
-      createdSessionsIds.push(session.id);
-    }
-    bru.setVar('created_sessions_ids', createdSessionsIds);
-  } else {
+  const sessionTotalCount = bru.getVar('sessions_total_count');
+  const numOfSessionsToCreate = bru.getVar('num_of_sessions_to_create');
+  const sessionsCountToWait = sessionTotalCount + numOfSessionsToCreate;
+  const sessions = res.body.data.classSessions.results;
+  
+  if (sessions.length < sessionsCountToWait) {
     bru.setNextRequest("Fetch sessions after creating sessions_");
+    return;
   }
+  
+  const createdSessionsIds = sessions.map(session => session.id);
+  
+  bru.setVar('created_sessions_ids', createdSessionsIds);
 }

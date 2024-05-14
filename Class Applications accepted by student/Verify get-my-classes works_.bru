@@ -1,7 +1,7 @@
 meta {
-  name: Verify get-my-classes works
+  name: Verify get-my-classes works_
   type: graphql
-  seq: 11
+  seq: 10
 }
 
 post {
@@ -38,7 +38,7 @@ script:post-response {
   const onlyClass = classes[0];
   
   if (onlyClass?.status !== 'ASSIGNED') {
-    bru.setNextRequest("Verify get-my-classes work");
+    bru.setNextRequest("Verify get-my-classes work_");
   }
 }
 
@@ -57,7 +57,7 @@ tests {
     expect(onlyClass.status).to.equal('ASSIGNED');
   });
   test(`Should return correct tutor for class`, () => {
-    expect(onlyClass.tutorId).to.equal(bru.getEnvVar('sample_tutor_id'));
+    expect(onlyClass.tutorId).to.equal(bru.getEnvVar('sample_tutor_id_1'));
   });
   test(`Should return exact 1 item`, () => {
     expect(classes.length).to.equal(1);

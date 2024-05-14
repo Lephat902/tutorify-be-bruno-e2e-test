@@ -35,3 +35,9 @@ script:post-response {
     bru.setNextRequest('Verify tutor is deleted_2');
   }
 }
+
+tests {
+  if (res.body.data.tutor !== null) {
+    return;
+  }
+}
