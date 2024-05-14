@@ -1,1 +1,4 @@
 environments/Local-Env.bru
+run-tests-staging.bat
+run-tests.bat
+result.json
