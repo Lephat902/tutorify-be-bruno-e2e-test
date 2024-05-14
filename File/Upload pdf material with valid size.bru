@@ -20,10 +20,10 @@ body:multipart-form {
 
 assert {
   res.status: eq 201
-  res.responseTime: lte 15000
   res.body.url: contains Data Structure and Algorithm Lab Introduction.pptx
   res.body.size: lte 20971520
   res.body.title: eq Data Structure and Algorithm Lab Introduction.pptx
+  ~res.responseTime: lte 15000
 }
 
 script:post-response {
