@@ -30,7 +30,7 @@ assert {
 }
 
 script:post-response {
-  const isNeededToRetry = res.status == 200 && (!res.body.data.tutor.isApproved || res.body.data.tutor.id == bru.getEnvVar('created_user_id')) 
+  const isNeededToRetry = res.status == 200 && (!res.body.data.tutor || !res.body.data.tutor.isApproved || res.body.data.tutor.id == bru.getEnvVar('created_user_id')) 
   
   if (isNeededToRetry) {
     bru.setNextRequest('Verify tutor is approved');
