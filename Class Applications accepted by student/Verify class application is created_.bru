@@ -1,5 +1,5 @@
 meta {
-  name: Verify class application is created_1
+  name: Verify class application is created_
   type: graphql
   seq: 3
 }
@@ -31,7 +31,7 @@ body:graphql:vars {
 
 script:post-response {
   if (res.body.data.classApplications.length === 0) {
-    bru.setNextRequest('Verify class application is created');
+    bru.setNextRequest('Verify class application is created_');
     return;
   }
   bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
