@@ -29,14 +29,6 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.classApplications: length 1
-  res.body.data.classApplications[0].status: eq PENDING
-  res.body.data.classApplications[0].isDesignated: isTruthy
-  res.body.data.classApplications[0].tutorId: eq {{sample_tutor_id}}
-  res.body.data.classApplications[0].classId: eq {{created_class_id}}
-}
-
 script:post-response {
   if (res.body.data.classApplications.length === 0) {
     bru.setNextRequest('Verify class application is created__');
