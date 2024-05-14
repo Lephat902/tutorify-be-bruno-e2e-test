@@ -1,5 +1,5 @@
 meta {
-  name: Verify tutor is deleted
+  name: Verify tutor is deleted_2
   type: graphql
   seq: 8
 }
@@ -29,8 +29,10 @@ assert {
 }
 
 script:post-response {
-  if (res.body.data.tutor !== null) {
-    bru.setNextRequest("Verify tutor is deleted");
+  const isNeededToRetry = res.status == 200 && res.body.data.tutor;
+  
+  if (isNeededToRetry) {
+    bru.setNextRequest('Verify tutor is deleted_2');
   }
 }
 

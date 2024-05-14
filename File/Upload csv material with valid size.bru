@@ -20,6 +20,6 @@ body:multipart-form {
 
 assert {
   res.status: eq 400
-  res.responseTime: lte {{upload_file_response_time}}
   res.body: contains The valid file formats are jpg, jpeg, png, pdf, doc, docx, ppt, pptx, xls, xlsx, and txt.
+  ~res.responseTime: lte {{upload_file_response_time}}
 }

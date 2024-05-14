@@ -1,5 +1,5 @@
 meta {
-  name: Verify user is deleted
+  name: Verify user is deleted_1
   type: graphql
   seq: 4
 }
@@ -24,9 +24,15 @@ body:graphql:vars {
   }
 }
 
+assert {
+  res.status: eq 200
+}
+
 script:post-response {
-  if (res.body.data !== null) {
-    bru.setNextRequest("Verify user is deleted");
+  const isNeededtoRetry = res.status == 200 && (res.body.data || !res.body.errors || res.body.errors[0].message.search("404") == -1);
+  
+  if (isNeededtoRetry) {
+    bru.setNextRequest('Verify user is deleted_1');
   }
 }
 

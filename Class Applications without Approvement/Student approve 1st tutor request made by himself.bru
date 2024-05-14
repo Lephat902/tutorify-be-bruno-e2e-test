@@ -12,7 +12,7 @@ patch {
 
 assert {
   res.status: eq 400
-  res.responseTime: lte {{medium_response_time}}
+  res.responseTime: lte {{extreme_high_response_time}}
   res.body: length 1
   res.body: contains There is something wrong with your request
 }

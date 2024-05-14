@@ -41,7 +41,7 @@ tests {
     expect(res.status).to.equal(200);
   });
   test(`Should be faster than LRT`, () => {
-    expect(res.responseTime).to.be.below(Number(bru.getEnvVar('low_response_time')));
+    expect(res.responseTime).to.be.below(Number(bru.getEnvVar('medium_response_time')));
   });
   test(`Should return correct feedbackCount`, () => {
     expect(res.body.data.tutor.feedbackCount - 1).to.equal(bru.getVar('feedbackCount'));

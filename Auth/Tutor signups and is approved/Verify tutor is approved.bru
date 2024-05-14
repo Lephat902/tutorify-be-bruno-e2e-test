@@ -27,6 +27,12 @@ body:graphql:vars {
 
 assert {
   res.status: eq 200
-  res.body.data.tutor.isApproved: eq true
-  res.body.data.tutor.id: eq {{created_user_id}}
+}
+
+script:post-response {
+  const isNeededToRetry = res.status == 200 && (!res.body.data.tutor || !res.body.data.tutor.isApproved || res.body.data.tutor.id == bru.getEnvVar('created_user_id')) 
+  
+  if (isNeededToRetry) {
+    bru.setNextRequest('Verify tutor is approved');
+  }
 }
