@@ -1,0 +1,75 @@
+meta {
+  name: Verify class application is created__
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: {{graphql_base_url}}
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query ExampleQuery($classId: String) {
+    classApplications(classId: $classId) {
+      id
+      status
+      isDesignated
+      tutorId
+      classId
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "classId": "{{created_class_id}}"
+  }
+}
+
+assert {
+  res.body.data.classApplications: length 1
+  res.body.data.classApplications[0].status: eq PENDING
+  res.body.data.classApplications[0].isDesignated: isTruthy
+  res.body.data.classApplications[0].tutorId: eq {{sample_tutor_id}}
+  res.body.data.classApplications[0].classId: eq {{created_class_id}}
+}
+
+script:post-response {
+  if (res.body.data.classApplications.length === 0) {
+    bru.setNextRequest('Verify class application is created__');
+    return;
+  }
+  bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
+}
+
+tests {
+  if (res.body.data.classApplications.length === 0) {
+    return;
+  }
+  
+  const applications = res.body.data.classApplications;
+  const onlyApplication = applications[0];
+  
+  test("Should return exact 1 application", () => {
+    expect(applications.length).to.equal(1);
+  });
+  
+  test("Should return exact application status", () => {
+    expect(onlyApplication.status).to.equal("PENDING");
+  });
+  
+  test("Should return exact application designation status", () => {
+    expect(onlyApplication.isDesignated).to.be.true;
+  });
+  
+  test("Should return exact application's tutor id", () => {
+    expect(onlyApplication.tutorId).to.equal(bru.getEnvVar('sample_tutor_id'));
+  });
+  
+  test("Should return exact application's class id", () => {
+    expect(onlyApplication.classId).to.equal(bru.getVar('created_class_id'));
+  });
+}
