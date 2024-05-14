@@ -34,12 +34,8 @@ body:graphql:vars {
   }
 }
 
-assert {
-  res.body.data.classSessions.results: length 1
-}
-
 script:post-response {
-  if (res.body.data.classSessions.results?.[0]?.id) {
+  if (res.body.data.classSessions.results?.[0]?.id && res.body.data.classSessions.results.length == 1) {
     bru.setVar('created_class_session_id', res.body.data.classSessions.results[0].id);
   } else {
     // Loop until id is returned

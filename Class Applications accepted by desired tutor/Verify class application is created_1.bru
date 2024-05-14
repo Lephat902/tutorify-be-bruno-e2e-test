@@ -1,5 +1,5 @@
 meta {
-  name: Verify class application is created
+  name: Verify class application is created_1
   type: graphql
   seq: 3
 }
@@ -38,5 +38,15 @@ assert {
 }
 
 script:post-response {
-  bru.setVar("1st_tutor_application_id", res.body.data.classApplications[0].id);
+  bru.setVar("1st_tutor_application_id", res.body.data?.classApplications[0].id);
+  
+  const isNeedtoRetry = res.body.status == 200 && (res.body.data.classApplications != 1 || res.body.data.classApplications[0].status != "PENDING" || !res.body.data.classApplications[0].isDesignated || res.body.data.classApplications[0].tutorId != bru.getEnvVar("sample_tutor_id") || res.body.data.classApplications[0].classId != bru.getEnvVar("created_class_id"));
+  
+  if (isNeedtoRetry) {
+    bru.setNextRequest("Verify class application is created_1");
+  }
+  
+  
+  
+  
 }
