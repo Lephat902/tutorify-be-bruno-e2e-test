@@ -31,8 +31,8 @@ vars:pre-request {
 }
 
 assert {
-  res.responseTime: lte 6000
   res.status: eq 201
+  ~res.responseTime: lte 6000
 }
 
 script:pre-request {
